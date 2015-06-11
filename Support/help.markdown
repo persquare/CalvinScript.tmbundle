@@ -7,6 +7,8 @@ The CalvinScript bundle provides a few tools for working with CalvinScript in Te
 - Documentation for actors (via Calvin's tools)
 - Running CalvinScripts inside TextMate, or in a terminal.
 
+See Quickstart section for a full list of commands.     
+
 
 # Configuration
 
