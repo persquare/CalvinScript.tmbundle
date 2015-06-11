@@ -9,6 +9,6 @@ create a symlink from TextMate's bundle directory to the cloned repository:
     ln -s path/to/CalvinScript.tmbundle .
 
 ## Getting started
-Select `Help`from the CavinScript menu in TextMate for an overview.
+Select `Help` from the CavinScript menu in TextMate for an overview.
 
 [1]: https://github.com/EricssonResearch/calvin-base
