@@ -49,59 +49,6 @@ p.stdin.close() # signal end of file
  
 print wp.html_footer()
 
-# #!/usr/bin/env bash
-#
-# . "$TM_SUPPORT_PATH/lib/webpreview.sh"
-# html_header "CalvinScript Help" "CalvinScript"
-#
-#
-# # Quickref symbols: ⇧ ⌘ ⌥ ↩ ⌃
-#
-# "$TM_SUPPORT_PATH/lib/markdown_to_help.rb" &lt;&lt;'MARKDOWN'
-#
-# # Introduction
-#
-# The CalvinScript bundle provides a few tools for working with CalvinScript in TextMate 2.
-#
-# # Commands
-#
-# **⌘H** *Help*
-# Show this help.
-#
-# **⌃H** *Help for Actor*
-# Show tooltip help for actor under cursor
-#
-# **⌘B** *Compile*
-# Compile (build) script and show the intermediate representation in the companion view.
-# It will report syntactical errors with a terse explanation and provide a link back to the error.
-#
-# **⌘R** *Run*
-# Run the script and display its output in the companion view.
-#
-# **⌥⌘R** *Run in Terminal*
-# Open a new tab in Terminal.app and run the script there.
-#
-# **⌘;** *Settings…*
-# Open (or create) `.tm_properties` file in the current directory for editing.
-#
-# # Configuration
-#
-# A few variables need to be set globally or locally for the bundle to work properly:
-#
-# In `.tm_properties` in the project directory:
-#
-#     projectDirectory="$CWD"
-#
-# In TextMate's variables, a `.tm_properties` file somewhere on TextMates path from your $HOME directory:
-#
-#     TM_CALVIN_DEPLOYER=/path/to/deploy_app.py
-#     TM_CALVIN_COMPILER=/path/to/compiler.py
-#     TM_CALVIN_DIR=/path/to/pycalvin/
-#
-#
-# MARKDOWN
-#
-# html_footer
 </string>
 	<key>input</key>
 	<string>none</string>

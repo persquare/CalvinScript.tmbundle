@@ -1,25 +1,23 @@
 # Introduction
 
-The CalvinScript bundle provides a few tools for working with CalvinScript in TextMate 2.
+The CalvinScript bundle provides a few tools for working with CalvinScript in TextMate 2, most notably:
+
+- Syntax highlighting
+- Syntax checking (via Calvin's tools)
+- Documentation for actors (via Calvin's tools)
+- Running CalvinScripts inside TextMate, or in a terminal.
+
 
 # Configuration
 
-A few variables need to be set globally or locally for the bundle to work properly:
+If you have installed [Calvin][1] on your system using the `setup.py` provided, everything should work out of the box.
 
-In `.tm_properties` in your project directory (which you can bring by choosing "Settings…" from the CalvinScript bundle menu):
+If you are running Calvin in a virtualenv, you will need to provide the location of the virtualenv, either in TextMate's preferences or, preferably, in a `.tm_properties` file in the root directory of your project(s):
 
-    projectDirectory="$CWD"
+    TM_VIRTUALENV=$HOME/.virtenvs/calvin-base/bin/activate_this.py
 
-In TextMate's variables, or a `.tm_properties` file somewhere on TextMates path from your $HOME directory:
+Change the path to wherever you keep your virtual environments. 
 
-    TM_CALVIN_DEPLOYER=/path/to/deploy_app.py
-    TM_CALVIN_COMPILER=/path/to/compiler.py
-    TM_CALVIN_DIR=/path/to/pycalvin/
+At this time, using this bundle with virtualenv is experimental, YMMV.
 
-`CALVIN_ACTORPATH` is a colon-separated list of directories (just like `PATH`) where calvin will look for actors.  
-You should set `CALVIN_ACTORPATH` in your general environment, in TextMate's variables, or in a `.tm_properties` file or calvin won't be able to locate any actors, and TextMate won't be able to provide help for actors.  
-It is a good idea to place `systemactors` first in the list unless you like surprises. 
-  
-    CALVIN_ACTORPATH=/path/to/pycalvin/systemactors:/path/to/pycalvin/devactors:/path/to/pycalvin/my_actors
-
-
+[1]: https://github.com/EricssonResearch/calvin-base
