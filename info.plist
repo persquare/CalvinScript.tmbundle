@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>contactEmailRot13</key>
+	<string></string>
+	<key>contactName</key>
+	<string>Per Persson</string>
+	<key>description</key>
+	<string>A bundle to ease working with CalvinScript.</string>
+	<key>name</key>
+	<string>CalvinScript</string>
+	<key>mainMenu</key>
+	<dict>
+		<key>excludedItems</key>
+		<array>
+		</array>
+		<key>items</key>
+		<array>
+  	<string>659ACFF1-BEDD-44EF-A576-BAE3E3D45477</string>
+    <string>6A2B628E-DDDE-496D-B1D9-6476535E0CC5</string>
+		<string>------------------------------------</string>
+  	<string>6253C0B5-D02E-4825-BA70-BD458C774289</string>
+  	<string>61E36CDE-226E-4BC8-ADB8-B97DF9DCC24F</string>
+  	<string>230D0D95-4558-427A-85FE-3DC0DC713F48</string>    
+  	<string>3E4778AB-D091-4F46-AC51-AC467F8A5568</string>
+		<string>------------------------------------</string>
+  	<string>48427149-5087-4039-A9EA-656CEE97E86E</string>
+  	<string>EB8F3B76-1AA9-46AA-9728-201B249E32DF</string>
+		<string>------------------------------------</string>
+    <string>29D7963D-8F2D-4BDB-8D52-A7A81F798E4A</string>
+		<string>------------------------------------</string>
+  	<string>42FAF63D-48F4-4052-A018-B5CC9717D797</string>    
+		</array>
+		<key>submenus</key>
+		<dict>
+			<key>29D7963D-8F2D-4BDB-8D52-A7A81F798E4A</key>
+			<dict>
+				<key>items</key>
+				<array>
+        <string>3D4A125A-4A55-4613-BF43-500C7984808F</string>
+      	<string>6705ABAD-9728-4F62-9BB3-2C08704F9364</string>
+				</array>
+				<key>name</key>
+				<string>Snippets</string>
+			</dict>
+		</dict>
+	</dict>
+	<key>uuid</key>
+	<string>86E5DCAF-2A01-485C-91D5-2CB0BED54D7C</string>
+</dict>
+</plist>

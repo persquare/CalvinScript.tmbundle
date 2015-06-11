@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+ 
+# just to remind you of some useful environment variables
+# see Help / Shell Variables for the full list
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
+
+# Prepare output window.
+html_header 'Calvin install components'
+
+# FIXME: Select destination
+OLDIFS=${IFS}
+IFS=':' read -a array &lt;&lt;&lt; "${CALVIN_ACTORPATH}"
+IFS=${OLDIFS}
+INSTALL_LOCATION="${array[${#array[@]} - 1]}"
+echo $INSTALL_LOCATION
+
+$TM_CALVIN_COMPILER $TM_FILEPATH --verbose --install ${INSTALL_LOCATION} \
+    2&gt; &gt;(perl -pe 's|^\s*(.+?)\s*\(line:(\d+),\s*col:(\d+)\)\s*$|$1\n&lt;a href="txmt://open?url=file://$ENV{'TM_FILEPATH'}&amp;line=$2&amp;column=$3"&gt;$ENV{'TM_FILEPATH'}:$2:$3&lt;/a&gt;|') \
+    1&gt; &gt;(echo "&lt;pre&gt;";cat -;echo "&lt;/pre&gt;")
+exit 0</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>isDisabled</key>
+	<true/>
+	<key>keyEquivalent</key>
+	<string>~@b</string>
+	<key>name</key>
+	<string>Install Components</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.calvin</string>
+	<key>uuid</key>
+	<string>6253C0B5-D02E-4825-BA70-BD458C774289</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

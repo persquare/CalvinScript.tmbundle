@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env python
+# encoding: utf-8
+
+"""Show help for the TextTasks bundle."""
+
+import os
+import sys
+import subprocess
+import StringIO
+
+envvars = ['TM_BUNDLE_SUPPORT', 'TM_SUPPORT_PATH']
+sys.path[:0] = [os.environ[v]+'/lib' for v in envvars if os.environ[v] not in sys.path]
+
+import webpreview as wp
+import help_gen
+
+# Get the static part of the documentation
+help_file = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'help.markdown')
+with open(help_file, 'r') as f:
+     help_text = f.read()
+
+# Get the auto-generated part of the documentation
+cmd_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], '../Commands')
+f = StringIO.StringIO()
+save_stdout = sys.stdout
+sys.stdout = f
+help_gen.generate_keyboard_shortcut_docs(cmd_dir)
+sys.stdout = save_stdout
+shortcut_docs = f.getvalue()
+f.close()
+     
+
+print wp.html_header('CalvinScript Help', 'CalvinScript')
+
+# Let markdown_to_html.rb do the heavy lifting
+md2help = os.path.join(os.environ['TM_SUPPORT_PATH'], 'lib/markdown_to_help.rb')     
+p = subprocess.Popen(md2help, stdin=subprocess.PIPE)
+p.stdin.write(u'# Quickstart (keyboard shortcuts)'.encode('utf-8'))
+p.stdin.write(shortcut_docs)
+p.stdin.write(help_text)
+p.stdin.close() # signal end of file
+ 
+print wp.html_footer()
+
+# #!/usr/bin/env bash
+#
+# . "$TM_SUPPORT_PATH/lib/webpreview.sh"
+# html_header "CalvinScript Help" "CalvinScript"
+#
+#
+# # Quickref symbols: ⇧ ⌘ ⌥ ↩ ⌃
+#
+# "$TM_SUPPORT_PATH/lib/markdown_to_help.rb" &lt;&lt;'MARKDOWN'
+#
+# # Introduction
+#
+# The CalvinScript bundle provides a few tools for working with CalvinScript in TextMate 2.
+#
+# # Commands
+#
+# **⌘H** *Help*
+# Show this help.
+#
+# **⌃H** *Help for Actor*
+# Show tooltip help for actor under cursor
+#
+# **⌘B** *Compile*
+# Compile (build) script and show the intermediate representation in the companion view.
+# It will report syntactical errors with a terse explanation and provide a link back to the error.
+#
+# **⌘R** *Run*
+# Run the script and display its output in the companion view.
+#
+# **⌥⌘R** *Run in Terminal*
+# Open a new tab in Terminal.app and run the script there.
+#
+# **⌘;** *Settings…*
+# Open (or create) `.tm_properties` file in the current directory for editing.
+#
+# # Configuration
+#
+# A few variables need to be set globally or locally for the bundle to work properly:
+#
+# In `.tm_properties` in the project directory:
+#
+#     projectDirectory="$CWD"
+#
+# In TextMate's variables, a `.tm_properties` file somewhere on TextMates path from your $HOME directory:
+#
+#     TM_CALVIN_DEPLOYER=/path/to/deploy_app.py
+#     TM_CALVIN_COMPILER=/path/to/compiler.py
+#     TM_CALVIN_DIR=/path/to/pycalvin/
+#
+#
+# MARKDOWN
+#
+# html_footer
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@h</string>
+	<key>name</key>
+	<string>Help</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.calvin</string>
+	<key>uuid</key>
+	<string>48427149-5087-4039-A9EA-656CEE97E86E</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

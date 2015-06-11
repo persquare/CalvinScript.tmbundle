@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>component ${1:ComponentType}(${2:arglist}) ${3:inports} -&gt; ${4:outports} {
+  """
+  ${1}(${2})
+  ${5:Documentation please}  
+  """
+  
+  ${0}
+} </string>
+	<key>name</key>
+	<string>Component Template</string>
+	<key>scope</key>
+	<string>source.calvin</string>
+	<key>tabTrigger</key>
+	<string>comp</string>
+	<key>uuid</key>
+	<string>6705ABAD-9728-4F62-9BB3-2C08704F9364</string>
+</dict>
+</plist>

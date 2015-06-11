@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env python
+# encoding: utf-8
+
+"""Check syntax of CalvinScript file or selected text."""
+
+import os
+# Allow this bundle to work in a virtual environment
+if 'TM_VIRTUALENV' in os.environ:
+    activate_this = os.environ['TM_VIRTUALENV']
+    execfile(activate_this, dict(__file__=activate_this))
+
+import sys
+envvars = ['TM_BUNDLE_SUPPORT', 'TM_SUPPORT_PATH']
+sys.path[:0] = [os.environ[v]+'/lib' for v in envvars if os.environ[v] not in sys.path]
+
+import tool_wrappers
+
+tool_wrappers.check_syntax()
+</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@b</string>
+	<key>name</key>
+	<string>Check Syntax</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>uuid</key>
+	<string>6A2B628E-DDDE-496D-B1D9-6476535E0CC5</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

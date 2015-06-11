@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+
+# Show help for an actor.
+# The word at the cursor location or the current selection determines which actor.
+# To see the documentation for a namespace, select the namespace part only.
+
+
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+# just to remind you of some useful environment variables
+# see Help / Shell Variables for the full list
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
+
+# Prepare output window.
+html_header 'Actor documentation'
+cd $TM_CALVIN_DIR
+# Either TM_CURRENT_WORD or TM_SELECTED_TEXT is defined
+what=${TM_CURRENT_WORD-$TM_SELECTED_TEXT}
+# python Tools/calvindoc.py $what 2&gt;/dev/null | "$TM_SUPPORT_PATH/bin/Markdown.pl"
+python Tools/calvindoc.py $what | "$TM_SUPPORT_PATH/bin/Markdown.pl"</string>
+	<key>input</key>
+	<string>word</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>^h</string>
+	<key>name</key>
+	<string>Help for Actor</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.calvin</string>
+	<key>uuid</key>
+	<string>EB8F3B76-1AA9-46AA-9728-201B249E32DF</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
