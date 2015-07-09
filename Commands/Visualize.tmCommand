@@ -8,7 +8,9 @@
 	<string>#!/usr/bin/env python
 # encoding: utf-8
 
-"""Check syntax of CalvinScript file or selected text."""
+"""Visuzlize a CalvinScript application graph. If the cursor is inside a component, visualize that instead.
+
+Requires GraphViz to be installed."""
 
 import os
 # Allow this bundle to work in a virtual environment
@@ -22,16 +24,16 @@ sys.path[:0] = [os.environ[v]+'/lib' for v in envvars if os.environ[v] not in sy
 
 import tool_wrappers
 
-tool_wrappers.check_syntax()
+tool_wrappers.visualize()
 </string>
 	<key>input</key>
 	<string>document</string>
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>keyEquivalent</key>
-	<string>@b</string>
+	<string>^g</string>
 	<key>name</key>
-	<string>Check Syntax</string>
+	<string>Visualize</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
@@ -41,7 +43,7 @@ tool_wrappers.check_syntax()
 	<key>scope</key>
 	<string>source.calvin</string>
 	<key>uuid</key>
-	<string>6A2B628E-DDDE-496D-B1D9-6476535E0CC5</string>
+	<string>ADFADA14-189C-4B90-AACF-F1E9C7F7AF37</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>

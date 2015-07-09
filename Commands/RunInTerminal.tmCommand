@@ -11,10 +11,16 @@
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
+echo `which csdeploy`
+[[ -f "${TM_VIRTUALENV}" ]] &amp;&amp; . "${TM_VIRTUALENV}"
+echo `which csdeploy`
+
+
 osascript  &lt;&lt;END
   tell application "Terminal"
     activate
-    do script with command "csdeploy --keep-alive '$TM_FILEPATH'"
+    set res to do shell script "csdeploy -w 2 -v '$TM_FILEPATH'"
+    display dialog res
   end tell
 END
 </string>
@@ -31,7 +37,7 @@ END
 	<key>outputFormat</key>
 	<string>html</string>
 	<key>outputLocation</key>
-	<string>discard</string>
+	<string>newWindow</string>
 	<key>scope</key>
 	<string>source.calvin</string>
 	<key>uuid</key>

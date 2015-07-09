@@ -19,13 +19,16 @@
 . "${TM_SUPPORT_PATH}/lib/html.sh"
 . "${TM_SUPPORT_PATH}/lib/webpreview.sh"
 
+. "${HOME}/.virtualenvs/calvin-master/bin/activate"
+
 # Prepare output window.
 html_header 'Actor documentation'
-cd $TM_CALVIN_DIR
+# cd $TM_CALVIN_DIR
 # Either TM_CURRENT_WORD or TM_SELECTED_TEXT is defined
 what=${TM_CURRENT_WORD-$TM_SELECTED_TEXT}
 # python Tools/calvindoc.py $what 2&gt;/dev/null | "$TM_SUPPORT_PATH/bin/Markdown.pl"
-python Tools/calvindoc.py $what | "$TM_SUPPORT_PATH/bin/Markdown.pl"</string>
+# python Tools/calvindoc.py $what | "$TM_SUPPORT_PATH/bin/Markdown.pl"
+csdocs --format=detailed $what | "$TM_SUPPORT_PATH/bin/Markdown.pl"</string>
 	<key>input</key>
 	<string>word</string>
 	<key>inputFormat</key>

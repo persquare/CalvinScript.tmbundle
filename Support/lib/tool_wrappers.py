@@ -3,9 +3,12 @@
 import os
 import sys
 import json
+import subprocess
 import exit_codes as exit
 import webpreview as wp
 import calvin.Tools.cscompiler as cc
+import calvin.Tools.csviz as csviz
+from calvin.csparser.parser import calvin_parser
 
 def format_heading(heading):
     print '<h3>{}</h3>'.format(heading)
@@ -87,3 +90,59 @@ def compile_source():
     print wp.html_footer()
 
 
+def visualize(fmt='pdf'):
+    # Get source
+    # Generate dot source
+    # Pipe to dot
+    # Capture result in temp file
+    # Render file in HTML view
+    src = os.environ.get('TM_FILENAME', 'untitled.calvin')
+    # dst = '{0}/{1}.pdf'.format(os.environ.get('TMPDIR', '/Users/eperspe'), src)
+    dst = '/Users/eperspe/foo2.pdf'
+    dot = os.environ.get('TM_DOT', 'dot')
+
+
+    # print '<pre>'
+    # os.system('which python')
+    #
+    # for p in sys.path:
+    #     print p
+    #
+    # for k,v in os.environ.iteritems():
+    #     print '{} --> {}\n'.format(k, v)
+    #
+    # print '</pre>'
+
+
+
+
+    source_text, line_offset = get_source()
+    ir, errors, warnings = calvin_parser(source_text, src)
+    dot_src = csviz.ScriptViz(ir).render()
+
+    # print dot_src
+    # print dst
+
+    print dot
+
+    # args = ['dot', '-Tpdf', '-o', '/Users/eperspe/foo.pdf']
+    # p = subprocess.Popen(args, stdin=subprocess.PIPE)
+    # p.stdin.write(dot_src.encode('utf-8'))
+    # p.stdin.close() # signal end of file
+    # os.system("dot -Tpdf -o /tmp/dot_foo.pdf")
+
+# # Prepare output window.
+# html_header 'Generate Graph' "$FILE"
+# SRC=${TM_FILENAME:-untitled.dot}
+# DST="${TMPDIR:-/tmp}/dot_${SRC%.*}.pdf"
+# ERR="${TMPDIR:-/tmp}/dot_errors"
+# DOT="${TM_DOT:-dot}"
+#
+# # Compile.
+# if "$DOT" -Tpdf -o "$DST" /dev/stdin &>"$ERR"; then
+#   echo "<meta http-equiv='refresh' content='0; file://$DST'>"
+# else
+#   pre <"$ERR"
+# fi
+# rm -f "$ERR"
+# html_footer
