@@ -296,7 +296,7 @@
 			<key>comment</key>
 			<string>aliased inport</string>
 			<key>match</key>
-			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<string>^\s*(\.[\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
 		</dict>
 		<key>connection_outport_proxy</key>
 		<dict>
@@ -326,7 +326,7 @@
 			<key>comment</key>
 			<string>aliased outport</string>
 			<key>match</key>
-			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*(\.[\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
 		</dict>
 		<key>docstring</key>
 		<dict>
