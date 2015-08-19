@@ -14,6 +14,10 @@
 	<array>
 		<dict>
 			<key>include</key>
+			<string>#constdef</string>
+		</dict>
+		<dict>
+			<key>include</key>
 			<string>#comment</string>
 		</dict>
 		<dict>
@@ -327,6 +331,36 @@
 			<string>aliased outport</string>
 			<key>match</key>
 			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*(\.[\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+		</dict>
+		<key>constdef</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.operator.assignment</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>comment</key>
+					<string>This should really be JSON</string>
+					<key>name</key>
+					<string>variable</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>^\s*(define)\s+([\p{Alpha}_][\p{Alnum}_]*)\s*(=)\s*(.+)\s*$</string>
 		</dict>
 		<key>docstring</key>
 		<dict>
