@@ -4,11 +4,15 @@ import os
 import sys
 import json
 import subprocess
+import time
 import exit_codes as exit
 import webpreview as wp
 import calvin.Tools.cscompiler as cc
+import calvin.Tools.csruntime as csruntime
 import calvin.Tools.csviz as csviz
 from calvin.csparser.parser import calvin_parser
+from calvin.actorstore.store import DocumentationStore
+
 
 def format_heading(heading):
     print '<h3>{}</h3>'.format(heading)
@@ -22,8 +26,6 @@ def issue_report(errors, warnings, line_offset):
         format_heading("Warnings:")
         for warning in warnings:
             format_issue(warning, line_offset)
-    if not errors and not warnings:
-        format_heading("Success!")
 
 
 def format_issue(issue, line_offset):
@@ -55,7 +57,13 @@ def parse_selection(sel):
     end = pos2linecol(end)
     return start, end
 
-def get_source():
+def get_source(file=None):
+    source = ""
+    if file:
+        with open(file, 'r') as f:
+           source = f.read()
+        return source, 0
+
     source = os.environ.get('TM_SELECTED_TEXT', None)
     if source:
         # Now we need to figure out the line number of the first selected line
@@ -68,76 +76,56 @@ def get_source():
     return source, line_offset
 
 
-def check_syntax():
-    source, line_offset = get_source()
-    _, errors, warnings = cc.compile(source)
-    issue_report(errors, warnings, line_offset)
-
-
-def compile_source():
-    source, line_offset = get_source()
+def check_syntax(file=None):
+    source, line_offset = get_source(file)
     deployable, errors, warnings = cc.compile(source)
+    if errors or warnings:
+        issue_report(errors, warnings, line_offset)
+    else:
+        format_heading("Success!")
 
-    issue_report(errors, warnings, line_offset)
+    return deployable, errors, warnings
+
+
+def compile_source(file=None):
+    deployable, _, _ = check_syntax(file)
 
     format_heading('Deployable:')
     print json.dumps(deployable, indent=4)
 
+    return deployable, errors, warnings
 
 
-def visualize(fmt='pdf'):
-    # Get source
-    # Generate dot source
-    # Pipe to dot
-    # Capture result in temp file
-    # Render file in HTML view
+def run(script):
+    source, line_offset = get_source(script)
+    deployable, errors, warnings = cc.compile(source)
+
+    issue_report(errors, warnings, line_offset)
+    if errors:
+        return
+
+    uri = "calvinip://localhost:5000"
+    control_uri = "http://localhost:5001"
+    rt = csruntime.runtime(uri, control_uri, None)
+    app_id = csruntime.deploy(rt, deployable, None)
+
+    timeout = 2
+    time.sleep(timeout)
+
+def run_debug(script):
+    # Fiddle with logging
+    run(script)
+
+def document(what):
+    store = DocumentationStore()
+    print store.help(what)
+
+def visualize():
     src = os.environ.get('TM_FILENAME', 'untitled.calvin')
-    # dst = '{0}/{1}.pdf'.format(os.environ.get('TMPDIR', '/Users/eperspe'), src)
-    dst = '/Users/eperspe/foo2.pdf'
-    dot = os.environ.get('TM_DOT', 'dot')
-
-
-    # print '<pre>'
-    # os.system('which python')
-    #
-    # for p in sys.path:
-    #     print p
-    #
-    # for k,v in os.environ.iteritems():
-    #     print '{} --> {}\n'.format(k, v)
-    #
-    # print '</pre>'
-
-
-
-
     source_text, line_offset = get_source()
     ir, errors, warnings = calvin_parser(source_text, src)
     dot_src = csviz.ScriptViz(ir).render()
-
-    # print dot_src
-    # print dst
-
-    print dot
-
-    # args = ['dot', '-Tpdf', '-o', '/Users/eperspe/foo.pdf']
-    # p = subprocess.Popen(args, stdin=subprocess.PIPE)
-    # p.stdin.write(dot_src.encode('utf-8'))
-    # p.stdin.close() # signal end of file
-    # os.system("dot -Tpdf -o /tmp/dot_foo.pdf")
-
-# # Prepare output window.
-# html_header 'Generate Graph' "$FILE"
-# SRC=${TM_FILENAME:-untitled.dot}
-# DST="${TMPDIR:-/tmp}/dot_${SRC%.*}.pdf"
-# ERR="${TMPDIR:-/tmp}/dot_errors"
-# DOT="${TM_DOT:-dot}"
-#
-# # Compile.
-# if "$DOT" -Tpdf -o "$DST" /dev/stdin &>"$ERR"; then
-#   echo "<meta http-equiv='refresh' content='0; file://$DST'>"
-# else
-#   pre <"$ERR"
-# fi
-# rm -f "$ERR"
-# html_footer
+    args = ['dot', '-Tsvg']
+    p = subprocess.Popen(args, stdin=subprocess.PIPE)
+    p.stdin.write(dot_src.encode('utf-8'))
+    p.stdin.close() # signal end of file

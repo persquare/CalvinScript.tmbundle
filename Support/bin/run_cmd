@@ -56,6 +56,21 @@ sp.set_defaults(func=tw.compile_source)
 sp = subparsers.add_parser('check', help='Check CalvinScript')
 sp.set_defaults(func=tw.check_syntax)
 
+# Run script
+sp = subparsers.add_parser('run', help='Run CalvinScript')
+sp.add_argument('--script', type=str, help='script to run')
+sp.set_defaults(func=tw.run)
+
+# Actor docs
+sp = subparsers.add_parser('document', help='Documentation for actor')
+sp.add_argument('what', type=str, help='actor or namespace to document')
+sp.set_defaults(func=tw.document)
+
+# Visualize Script
+sp = subparsers.add_parser('visualize', help='Visualize CalvinScript')
+sp.set_defaults(func=tw.visualize)
+
+
 # Get the arguments and call the corresponding function
 args = parser.parse_args()
 func = args.func
