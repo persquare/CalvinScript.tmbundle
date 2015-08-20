@@ -71,23 +71,18 @@ def get_source():
 def check_syntax():
     source, line_offset = get_source()
     _, errors, warnings = cc.compile(source)
-
-    print wp.html_header('CalvinScript Syntax Check', os.environ.get('TM_FILENAME', 'unsaved'))
     issue_report(errors, warnings, line_offset)
-    print wp.html_footer()
 
 
 def compile_source():
     source, line_offset = get_source()
     deployable, errors, warnings = cc.compile(source)
 
-    print wp.html_header('CalvinScript Compile', os.environ.get('TM_FILENAME', 'unsaved'))
     issue_report(errors, warnings, line_offset)
+
     format_heading('Deployable:')
-    print '<pre>'
     print json.dumps(deployable, indent=4)
-    print '</pre>'
-    print wp.html_footer()
+
 
 
 def visualize(fmt='pdf'):

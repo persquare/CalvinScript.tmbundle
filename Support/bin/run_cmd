@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import argparse
+
+def inside_virtualenv():
+    return hasattr(sys, 'real_prefix')
+
+# Add supporting library locations to sys.path
+for v in ['TM_SUPPORT_PATH', 'TM_BUNDLE_SUPPORT']:
+    p = os.environ[v]+'/lib'
+    if p not in sys.path:
+        sys.path.insert(1, p)
+
+# With support for virtualenv in the CalvinScript bundle,
+# we need to handle four different conditions:
+#
+# 1. Working with an installed Calvin without virtual environments
+#
+#    => `calvin/` is in sys.path, so nothing needs to be done
+#
+# 2. Working with an installed Calvin in a virtual environment
+#
+#    => `TM_VIRTUALENV` must be set
+#
+# 3. Working with a development version of Calvin without virtual environments
+#
+#    => `TM_CALVINDIR` must be set, modify PYTHONPATH
+#
+# 4. Working with a development version of Calvin in a virtual environment
+#
+#    => `TM_VIRTUALENV` must be set,
+#       use `pip install -e .` to setup but otherwise same as (2)
+#
+# Case (1) is trivial, case (2) and (4) are taken care of in the .tmCommand
+# and case (3) means prepend TM_CALVINDIR to sys.path iff TM_CALVINDIR is defined
+# and not inside a virtual environment.
+
+# Check for case (3) above, and act accordingly
+if not inside_virtualenv() and 'TM_CALVINDIR' in os.environ:
+    sys.path.insert(1, os.environ['TM_CALVINDIR'])
+
+# Grab the actual commands from the bundle support lib dir
+import tool_wrappers as tw
+
+# Create argument parser/subparsers
+parser = argparse.ArgumentParser()
+subparsers = parser.add_subparsers(help='Available commands')
+
+# Compile
+sp = subparsers.add_parser('compile', help='Compile CalvinScript')
+sp.set_defaults(func=tw.compile_source)
+
+# Check syntax
+sp = subparsers.add_parser('check', help='Check CalvinScript')
+sp.set_defaults(func=tw.check_syntax)
+
+# Get the arguments and call the corresponding function
+args = parser.parse_args()
+func = args.func
+d = vars(args)
+del d['func']
+func(**d)

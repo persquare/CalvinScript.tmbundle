@@ -5,24 +5,24 @@
 	<key>beforeRunningCommand</key>
 	<string>saveActiveFile</string>
 	<key>command</key>
-	<string>#!/usr/bin/env python
-# encoding: utf-8
+	<string>#!/bin/sh
 
-"""Compile CalvinScript file or selected text and show deployable representation."""
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
-import os
-# Allow this bundle to work in a virtual environment
-if 'TM_VIRTUALENV' in os.environ:
-    activate_this = os.environ['TM_VIRTUALENV']
-    execfile(activate_this, dict(__file__=activate_this))
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
 
-import sys
-envvars = ['TM_BUNDLE_SUPPORT', 'TM_SUPPORT_PATH']
-sys.path[:0] = [os.environ[v]+'/lib' for v in envvars if os.environ[v] not in sys.path]
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
 
-import tool_wrappers
-
-tool_wrappers.compile_source()
+# Prepare output window.
+html_header "Compile script" "${TM_FILENAME}" 
+echo "&lt;pre&gt;"
+# cscompile  --stdout "${TM_FILEPATH}"
+run_cmd compile 2&gt;/dev/null
+echo "&lt;/pre&gt;"
+html_footer
 </string>
 	<key>input</key>
 	<string>document</string>
