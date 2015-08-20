@@ -5,22 +5,27 @@
 	<key>beforeRunningCommand</key>
 	<string>saveActiveFile</string>
 	<key>command</key>
-	<string>#!/usr/bin/env bash
-
-# Run the current script in a new window in Terminal with the --keep-alive flag set.
+	<string>#!/bin/sh
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
-echo `which csdeploy`
-[[ -f "${TM_VIRTUALENV}" ]] &amp;&amp; . "${TM_VIRTUALENV}"
-echo `which csdeploy`
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
 
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
 
-osascript  &lt;&lt;END
+RUN_CMD=$(which run_cmd)
+
+# https://developer.apple.com/library/mac/technotes/tn2065/_index.html
+osascript &lt;&lt;END
   tell application "Terminal"
     activate
-    set res to do shell script "csdeploy -w 2 -v '$TM_FILEPATH'"
-    display dialog res
+    do shell script "echo $PATH"
+    -- do shell script "$RUN_CMD run --script $TM_FILEPATH"
+    -- set res to 
+    -- display dialog res
   end tell
 END
 </string>
