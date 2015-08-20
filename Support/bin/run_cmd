@@ -61,6 +61,11 @@ sp = subparsers.add_parser('run', help='Run CalvinScript')
 sp.add_argument('--script', type=str, help='script to run')
 sp.set_defaults(func=tw.run)
 
+# Run script with verbose output
+sp = subparsers.add_parser('run_debug', help='Run CalvinScript with verbose output')
+sp.add_argument('--script', type=str, help='script to run')
+sp.set_defaults(func=tw.run_debug)
+
 # Actor docs
 sp = subparsers.add_parser('document', help='Documentation for actor')
 sp.add_argument('what', type=str, help='actor or namespace to document')
