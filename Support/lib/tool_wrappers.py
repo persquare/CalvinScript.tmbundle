@@ -93,8 +93,6 @@ def compile_source(file=None):
     format_heading('Deployable:')
     print json.dumps(deployable, indent=4)
 
-    return deployable, errors, warnings
-
 
 def run(script):
     source, line_offset = get_source(script)
