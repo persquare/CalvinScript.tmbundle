@@ -8,7 +8,7 @@
 	<string>#!/usr/bin/env python
 # encoding: utf-8
 
-"""Show help for the TextTasks bundle."""
+"""Show help for the CalvinScript bundle."""
 
 import os
 import sys

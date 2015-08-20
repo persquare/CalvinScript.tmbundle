@@ -10,6 +10,7 @@
 # Show help for an actor.
 # The word at the cursor location or the current selection determines which actor.
 # To see the documentation for a namespace, select the namespace part only.
+# Without selection and cursor outside of text, display top level documentation.
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
