@@ -124,6 +124,9 @@ def visualize():
     ir, errors, warnings = calvin_parser(source_text, src)
     dot_src = csviz.ScriptViz(ir).render()
     args = ['dot', '-Tsvg']
-    p = subprocess.Popen(args, stdin=subprocess.PIPE)
-    p.stdin.write(dot_src.encode('utf-8'))
-    p.stdin.close() # signal end of file
+    try:
+        p = subprocess.Popen(args, stdin=subprocess.PIPE)
+        p.stdin.write(dot_src.encode('utf-8'))
+        p.stdin.close() # signal end of file
+    except:
+        print 'Visualization requires \'dot\' command from <a href="http://www.graphviz.org">GraphViz</a>'
