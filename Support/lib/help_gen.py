@@ -75,7 +75,7 @@ def commandlist(cmd_dir):
     return commands, errors
 
 def extract_docstring(string):
-    LANG = r'^#!.+?\s+([a-z]+)'
+    LANG = r'^#!.+[/|\s+]([a-z]+)'
     match = re.match(LANG, string)
     if not match:
         return u''
