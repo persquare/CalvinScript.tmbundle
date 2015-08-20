@@ -17,7 +17,7 @@ ACTIVATE="${TM_VIRTUALENV}/bin/activate"
 [[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
 
 # Prepare output window.
-html_header "Check script" "${TM_FILENAME}" 
+html_header "Check script" "${TM_VIRTUALENV}" 
 echo "&lt;pre&gt;"
 run_cmd check 2&gt;/dev/null
 echo "&lt;/pre&gt;"

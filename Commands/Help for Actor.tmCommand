@@ -22,7 +22,7 @@ ACTIVATE="${TM_VIRTUALENV}/bin/activate"
 
 what=${TM_CURRENT_WORD-$TM_SELECTED_TEXT}
 # Prepare output window.
-html_header "Actor documentation" "${what}" 
+html_header "Actor documentation" "${TM_VIRTUALENV}" 
 run_cmd document "${what}" | "$TM_SUPPORT_PATH/bin/Markdown.pl"
 html_footer
 </string>
