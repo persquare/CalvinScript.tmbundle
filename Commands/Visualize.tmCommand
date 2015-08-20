@@ -5,26 +5,21 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>#!/usr/bin/env python
-# encoding: utf-8
+	<string>#!/bin/sh
 
-"""Visuzlize a CalvinScript application graph. If the cursor is inside a component, visualize that instead.
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
-Requires GraphViz to be installed."""
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
 
-import os
-# Allow this bundle to work in a virtual environment
-if 'TM_VIRTUALENV' in os.environ:
-    activate_this = os.environ['TM_VIRTUALENV']
-    execfile(activate_this, dict(__file__=activate_this))
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
 
-import sys
-envvars = ['TM_BUNDLE_SUPPORT', 'TM_SUPPORT_PATH']
-sys.path[:0] = [os.environ[v]+'/lib' for v in envvars if os.environ[v] not in sys.path]
-
-import tool_wrappers
-
-tool_wrappers.visualize()
+# Prepare output window.
+html_header "Visualize script" "${TM_FILENAME}" 
+run_cmd visualize
+html_footer
 </string>
 	<key>input</key>
 	<string>document</string>
