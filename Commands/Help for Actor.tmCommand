@@ -11,24 +11,21 @@
 # The word at the cursor location or the current selection determines which actor.
 # To see the documentation for a namespace, select the namespace part only.
 
-
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
-# just to remind you of some useful environment variables
-# see Help / Shell Variables for the full list
 . "${TM_SUPPORT_PATH}/lib/html.sh"
 . "${TM_SUPPORT_PATH}/lib/webpreview.sh"
 
-. "${HOME}/.virtualenvs/calvin-master/bin/activate"
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
 
-# Prepare output window.
-html_header 'Actor documentation'
-# cd $TM_CALVIN_DIR
-# Either TM_CURRENT_WORD or TM_SELECTED_TEXT is defined
 what=${TM_CURRENT_WORD-$TM_SELECTED_TEXT}
-# python Tools/calvindoc.py $what 2&gt;/dev/null | "$TM_SUPPORT_PATH/bin/Markdown.pl"
-# python Tools/calvindoc.py $what | "$TM_SUPPORT_PATH/bin/Markdown.pl"
-csdocs --format=detailed $what | "$TM_SUPPORT_PATH/bin/Markdown.pl"</string>
+# Prepare output window.
+html_header "Actor documentation" "${what}" 
+run_cmd document "${what}" | "$TM_SUPPORT_PATH/bin/Markdown.pl"
+html_footer
+</string>
 	<key>input</key>
 	<string>word</string>
 	<key>inputFormat</key>
