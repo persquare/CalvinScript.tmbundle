@@ -5,7 +5,16 @@
 	<key>beforeRunningCommand</key>
 	<string>saveActiveFile</string>
 	<key>command</key>
-	<string>#!/usr/bin/env ruby18
+	<string>#!/bin/sh
+
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
+ 
+ 
+/usr/bin/env ruby18 &lt;&lt;-EORUBY
 
 # Run the current script and display output in TextMate's HTML view.
 
@@ -14,7 +23,10 @@ require ENV["TM_SUPPORT_PATH"] + "/lib/tm/save_current_document"
 
 TextMate.save_if_untitled('calvin')
 TextMate::Executor.make_project_master_current_document
-TextMate::Executor.run("csdeploy", :script_args =&gt; [ENV["TM_FILEPATH"]])</string>
+TextMate::Executor.run("run_cmd", "run", "--script", ENV["TM_FILEPATH"], :create_error_pipe =&gt; true, :use_hashbang =&gt; true)
+
+EORUBY
+</string>
 	<key>input</key>
 	<string>none</string>
 	<key>inputFormat</key>
