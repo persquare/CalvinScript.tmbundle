@@ -7,7 +7,9 @@
 	<key>command</key>
 	<string>#!/bin/sh
 
-# Run a CalvinScript with debug-level verbosity and present the output in the helper view
+# Run a CalvinScript with debug-level verbosity and present the output in the helper view.
+# Checks calvin's config section 'developer' for option 'debug_modules' which should be a 
+# list of modules to capture debug logging from, or a list with a 'null' entry to capture all.
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 

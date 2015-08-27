@@ -12,6 +12,7 @@ import calvin.Tools.csruntime as csruntime
 import calvin.Tools.csviz as csviz
 from calvin.csparser.parser import calvin_parser
 from calvin.actorstore.store import DocumentationStore
+import calvin.utilities.calvinconfig as calvinconfig
 
 
 def format_heading(heading):
@@ -111,7 +112,15 @@ def run(script):
     time.sleep(timeout)
 
 def run_debug(script):
-    # Fiddle with logging
+    import logging
+    config = calvinconfig.get()
+    debug_modules = config.get('developer', 'debug_modules')
+    if not debug_modules:
+        print "No 'debug_modules' option in 'developer' section of config => output verbosity is INFO everywhere."
+    else:
+        for m in debug_modules:
+            csruntime.get_logger(m).setLevel(logging.DEBUG)
+    print "\n{0}\n{1}\n{0}".format("-"*80, config)
     run(script)
 
 def document(what):
