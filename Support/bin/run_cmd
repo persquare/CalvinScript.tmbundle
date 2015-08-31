@@ -41,6 +41,9 @@ for v in ['TM_SUPPORT_PATH', 'TM_BUNDLE_SUPPORT']:
 if not inside_virtualenv() and 'TM_CALVINDIR' in os.environ:
     sys.path.insert(1, os.environ['TM_CALVINDIR'])
 
+# Change directory
+os.chdir(os.environ.get('TM_DIRECTORY', '.'))
+
 # Grab the actual commands from the bundle support lib dir
 import tool_wrappers as tw
 
