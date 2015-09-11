@@ -53,6 +53,10 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#connection_inport_literal</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#invalid</string>
 				</dict>
 			</array>
@@ -84,6 +88,10 @@
 				<dict>
 					<key>include</key>
 					<string>#connection_outport_proxy</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#connection_inport_literal</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -271,6 +279,42 @@
 			</dict>
 			<key>match</key>
 			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+		</dict>
+		<key>connection_inport_literal</key>
+		<dict>
+			<key>begin</key>
+			<string>^</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#variable</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+			</array>
 		</dict>
 		<key>connection_inport_proxy</key>
 		<dict>
