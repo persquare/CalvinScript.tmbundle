@@ -21,9 +21,12 @@ RUN_CMD=$(which run_cmd)
 
 # https://developer.apple.com/library/mac/technotes/tn2065/_index.html
 osascript &lt;&lt;END
-  tell application "Terminal"
+tell application "Terminal"
     activate
-    do script with command "if [ -f \"${ACTIVATE}\" ]; then source \"${ACTIVATE}\"; fi; TM_SUPPORT_PATH=\"${TM_SUPPORT_PATH}\" TM_BUNDLE_SUPPORT=\"${TM_BUNDLE_SUPPORT}\" \"${RUN_CMD}\" run --keep-alive --script \"${TM_FILEPATH}\""
+    tell application "System Events"
+        keystroke "t" using {command down}
+    end tell
+    do script with command "if [ -f \"${ACTIVATE}\" ]; then source \"${ACTIVATE}\"; fi; TM_SUPPORT_PATH=\"${TM_SUPPORT_PATH}\" TM_BUNDLE_SUPPORT=\"${TM_BUNDLE_SUPPORT}\" \"${RUN_CMD}\" run --keep-alive --script \"${TM_FILEPATH}\""  in selected tab of the front window
   end tell
 END
 
