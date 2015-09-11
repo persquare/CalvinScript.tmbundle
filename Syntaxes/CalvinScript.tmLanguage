@@ -334,6 +334,8 @@
 		</dict>
 		<key>constdef</key>
 		<dict>
+			<key>begin</key>
+			<string>^\s*(define)\s+([\p{Alpha}_][\p{Alnum}_]*)\s*(=)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -351,16 +353,16 @@
 					<key>name</key>
 					<string>keyword.operator.assignment</string>
 				</dict>
-				<key>4</key>
-				<dict>
-					<key>comment</key>
-					<string>This should really be JSON</string>
-					<key>name</key>
-					<string>variable</string>
-				</dict>
 			</dict>
-			<key>match</key>
-			<string>^\s*(define)\s+([\p{Alpha}_][\p{Alnum}_]*)\s*(=)\s*(.+)\s*$</string>
+			<key>end</key>
+			<string>$</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+			</array>
 		</dict>
 		<key>docstring</key>
 		<dict>
