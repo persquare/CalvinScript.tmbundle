@@ -23,7 +23,7 @@ RUN_CMD=$(which run_cmd)
 osascript &lt;&lt;END
   tell application "Terminal"
     activate
-    do script with command "if [ -f \"${ACTIVATE}\" ]; then source \"${ACTIVATE}\"; fi; TM_SUPPORT_PATH=\"${TM_SUPPORT_PATH}\" TM_BUNDLE_SUPPORT=\"${TM_BUNDLE_SUPPORT}\" \"${RUN_CMD}\" run --script \"${TM_FILEPATH}\""
+    do script with command "if [ -f \"${ACTIVATE}\" ]; then source \"${ACTIVATE}\"; fi; TM_SUPPORT_PATH=\"${TM_SUPPORT_PATH}\" TM_BUNDLE_SUPPORT=\"${TM_BUNDLE_SUPPORT}\" \"${RUN_CMD}\" run --keep-alive --script \"${TM_FILEPATH}\""
   end tell
 END
 </string>
