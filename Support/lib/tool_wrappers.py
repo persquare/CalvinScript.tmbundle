@@ -111,11 +111,16 @@ def run(script, timeout):
     control_uri = "http://{}:5001".format(ip)
     try:
         csruntime.dispatch_and_deploy(deployable, timeout, uri, control_uri, None)
-    except:
-        # FIXME: Keep the old code around until new release
+    except KeyboardInterrupt:
+        # User terminated the runtime (CTRL-C)
+        pass
+    except AttributeError:
+        # FIXME: Keep the old code around until next Calvin release (0.3.0)
         rt = csruntime.runtime(uri, control_uri, None)
         app_id = csruntime.deploy(rt, deployable, None)
-        time.sleep(timeout)
+        time.sleep(100 if timeout is None else timeout)
+    except:
+        pass
 
 
 def run_debug(script, timeout):
