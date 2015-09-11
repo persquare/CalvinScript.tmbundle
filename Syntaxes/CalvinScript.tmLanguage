@@ -53,6 +53,10 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#connection_inport_literal</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#invalid</string>
 				</dict>
 			</array>
@@ -84,6 +88,10 @@
 				<dict>
 					<key>include</key>
 					<string>#connection_outport_proxy</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#connection_inport_literal</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -272,6 +280,42 @@
 			<key>match</key>
 			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
 		</dict>
+		<key>connection_inport_literal</key>
+		<dict>
+			<key>begin</key>
+			<string>^</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#variable</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+			</array>
+		</dict>
 		<key>connection_inport_proxy</key>
 		<dict>
 			<key>captures</key>
@@ -334,6 +378,8 @@
 		</dict>
 		<key>constdef</key>
 		<dict>
+			<key>begin</key>
+			<string>^\s*(define)\s+([\p{Alpha}_][\p{Alnum}_]*)\s*(=)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -351,16 +397,16 @@
 					<key>name</key>
 					<string>keyword.operator.assignment</string>
 				</dict>
-				<key>4</key>
-				<dict>
-					<key>comment</key>
-					<string>This should really be JSON</string>
-					<key>name</key>
-					<string>variable</string>
-				</dict>
 			</dict>
-			<key>match</key>
-			<string>^\s*(define)\s+([\p{Alpha}_][\p{Alnum}_]*)\s*(=)\s*(.+)\s*$</string>
+			<key>end</key>
+			<string>$</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+			</array>
 		</dict>
 		<key>docstring</key>
 		<dict>
@@ -448,28 +494,17 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#string</string>
-				</dict>
-				<dict>
-					<key>include</key>
 					<string>#string_raw</string>
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#number</string>
+					<string>source.json</string>
 				</dict>
 				<dict>
 					<key>include</key>
 					<string>#variable</string>
 				</dict>
 			</array>
-		</dict>
-		<key>number</key>
-		<dict>
-			<key>match</key>
-			<string>[0-9]+(?:\.[0-9]*)?</string>
-			<key>name</key>
-			<string>constant.numeric</string>
 		</dict>
 		<key>parameter</key>
 		<dict>
@@ -539,22 +574,6 @@
 			</dict>
 			<key>match</key>
 			<string>\s*(((?:[\p{Alpha}_][\p{Alnum}_]*\.)*)([\p{Alpha}_][\p{Alnum}_]*))\s*\(</string>
-		</dict>
-		<key>string</key>
-		<dict>
-			<key>begin</key>
-			<string>"</string>
-			<key>end</key>
-			<string>"</string>
-			<key>name</key>
-			<string>string.quoted.double</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#escaped_char</string>
-				</dict>
-			</array>
 		</dict>
 		<key>string_raw</key>
 		<dict>
