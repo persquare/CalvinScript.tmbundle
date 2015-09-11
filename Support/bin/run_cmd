@@ -62,12 +62,12 @@ sp.set_defaults(func=tw.check_syntax)
 # Run script
 sp = subparsers.add_parser('run', help='Run CalvinScript')
 sp.add_argument('--script', type=str, help='script to run')
-sp.set_defaults(func=tw.run)
+sp.set_defaults(func=tw.run, timeout=2)
 
 # Run script with verbose output
 sp = subparsers.add_parser('run_debug', help='Run CalvinScript with verbose output')
 sp.add_argument('--script', type=str, help='script to run')
-sp.set_defaults(func=tw.run_debug)
+sp.set_defaults(func=tw.run_debug, timeout=2)
 
 # Actor docs
 sp = subparsers.add_parser('document', help='Documentation for actor')

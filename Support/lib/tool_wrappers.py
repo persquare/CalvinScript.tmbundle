@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import subprocess
+import socket
 import time
 import exit_codes as exit
 import webpreview as wp
@@ -95,23 +96,29 @@ def compile_source(file=None):
     print json.dumps(deployable, indent=4)
 
 
-def run(script):
+def _get_ip_address():
+    return socket.gethostbyname(socket.gethostname())
+
+def run(script, timeout):
     source, line_offset = get_source(script)
     deployable, errors, warnings = cc.compile(source)
 
     issue_report(errors, warnings, line_offset)
     if errors:
         return
+    ip = _get_ip_address()
+    uri = "calvinip://{}:5000".format(ip)
+    control_uri = "http://{}:5001".format(ip)
+    try:
+        csruntime.dispatch_and_deploy(deployable, timeout, uri, control_uri, None)
+    except:
+        # FIXME: Keep the old code around until new release
+        rt = csruntime.runtime(uri, control_uri, None)
+        app_id = csruntime.deploy(rt, deployable, None)
+        time.sleep(timeout)
 
-    uri = "calvinip://localhost:5000"
-    control_uri = "http://localhost:5001"
-    rt = csruntime.runtime(uri, control_uri, None)
-    app_id = csruntime.deploy(rt, deployable, None)
 
-    timeout = 2
-    time.sleep(timeout)
-
-def run_debug(script):
+def run_debug(script, timeout):
     import logging
     config = calvinconfig.get()
     debug_modules = config.get('developer', 'debug_modules')
@@ -121,7 +128,8 @@ def run_debug(script):
         for m in debug_modules:
             csruntime.get_logger(m).setLevel(logging.DEBUG)
     print "\n{0}\n{1}\n{0}".format("-"*80, config)
-    run(script)
+    run(script, timeout)
+
 
 def document(what):
     store = DocumentationStore()
