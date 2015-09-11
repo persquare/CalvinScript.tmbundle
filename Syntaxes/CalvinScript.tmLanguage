@@ -450,10 +450,6 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#string</string>
-				</dict>
-				<dict>
-					<key>include</key>
 					<string>#string_raw</string>
 				</dict>
 				<dict>
@@ -465,13 +461,6 @@
 					<string>#variable</string>
 				</dict>
 			</array>
-		</dict>
-		<key>number</key>
-		<dict>
-			<key>match</key>
-			<string>[0-9]+(?:\.[0-9]*)?</string>
-			<key>name</key>
-			<string>constant.numeric</string>
 		</dict>
 		<key>parameter</key>
 		<dict>
@@ -541,22 +530,6 @@
 			</dict>
 			<key>match</key>
 			<string>\s*(((?:[\p{Alpha}_][\p{Alnum}_]*\.)*)([\p{Alpha}_][\p{Alnum}_]*))\s*\(</string>
-		</dict>
-		<key>string</key>
-		<dict>
-			<key>begin</key>
-			<string>"</string>
-			<key>end</key>
-			<string>"</string>
-			<key>name</key>
-			<string>string.quoted.double</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#escaped_char</string>
-				</dict>
-			</array>
 		</dict>
 		<key>string_raw</key>
 		<dict>
