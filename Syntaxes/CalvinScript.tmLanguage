@@ -456,7 +456,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#number</string>
+					<string>source.json</string>
 				</dict>
 				<dict>
 					<key>include</key>
