@@ -26,6 +26,7 @@ osascript &lt;&lt;END
     do script with command "if [ -f \"${ACTIVATE}\" ]; then source \"${ACTIVATE}\"; fi; TM_SUPPORT_PATH=\"${TM_SUPPORT_PATH}\" TM_BUNDLE_SUPPORT=\"${TM_BUNDLE_SUPPORT}\" \"${RUN_CMD}\" run --keep-alive --script \"${TM_FILEPATH}\""
   end tell
 END
+
 </string>
 	<key>input</key>
 	<string>none</string>
@@ -40,7 +41,7 @@ END
 	<key>outputFormat</key>
 	<string>html</string>
 	<key>outputLocation</key>
-	<string>newWindow</string>
+	<string>discard</string>
 	<key>scope</key>
 	<string>source.calvin</string>
 	<key>uuid</key>
