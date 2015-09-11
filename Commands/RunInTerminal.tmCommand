@@ -16,7 +16,6 @@
 
 # Activate the virtualenv if requested by environment or .tm_properties
 ACTIVATE="${TM_VIRTUALENV}/bin/activate"
-[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
 
 RUN_CMD=$(which run_cmd)
 
@@ -24,10 +23,7 @@ RUN_CMD=$(which run_cmd)
 osascript &lt;&lt;END
   tell application "Terminal"
     activate
-    do shell script "echo $PATH"
-    -- do shell script "$RUN_CMD run --script $TM_FILEPATH"
-    -- set res to 
-    -- display dialog res
+    do script with command "if [ -f \"${ACTIVATE}\" ]; then source \"${ACTIVATE}\"; fi; TM_SUPPORT_PATH=\"${TM_SUPPORT_PATH}\" TM_BUNDLE_SUPPORT=\"${TM_BUNDLE_SUPPORT}\" \"${RUN_CMD}\" run --script \"${TM_FILEPATH}\""
   end tell
 END
 </string>
