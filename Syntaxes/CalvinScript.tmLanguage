@@ -95,6 +95,10 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#connection_inport_literal_outport_proxy</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#connection_inport_literal</string>
 				</dict>
 				<dict>
@@ -326,7 +330,11 @@
 		<dict>
 			<key>begin</key>
 			<string>^\s*(?=[-0-9\.\[\{\"\!])</string>
-			<key>captures</key>
+			<key>comment</key>
+			<string>Non-capturing lookahead to detect JSON or raw string</string>
+			<key>end</key>
+			<string>(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<key>endCaptures</key>
 			<dict>
 				<key>1</key>
 				<dict>
@@ -344,10 +352,39 @@
 					<string>support.constant</string>
 				</dict>
 			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#string_raw</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+			</array>
+		</dict>
+		<key>connection_inport_literal_outport_proxy</key>
+		<dict>
+			<key>begin</key>
+			<string>^\s*(?=[-0-9\.\[\{\"\!])</string>
 			<key>comment</key>
-			<string>Non-capturing lookahead to detect JSON or raw string</string>
+			<string>literal on aliased outport</string>
 			<key>end</key>
-			<string>(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<string>(&gt;)\s*\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.decorator</string>
+				</dict>
+			</dict>
 			<key>patterns</key>
 			<array>
 				<dict>
