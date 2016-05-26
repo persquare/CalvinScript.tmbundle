@@ -266,31 +266,41 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>variable.other.calvin</string>
+					<string>keyword</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>support.constant</string>
+					<string>variable.other.calvin</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.control</string>
+					<string>support.constant</string>
 				</dict>
 				<key>4</key>
 				<dict>
 					<key>name</key>
-					<string>variable.other.calvin</string>
+					<string>keyword.control</string>
 				</dict>
 				<key>5</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>6</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>7</key>
 				<dict>
 					<key>name</key>
 					<string>support.constant</string>
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<string>^\s*(?:(voidport)|(?:([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)))\s*(&gt;)\s*(?:(voidport)|(?:([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)))\s*$</string>
 		</dict>
 		<key>connection_inport_identifier</key>
 		<dict>
