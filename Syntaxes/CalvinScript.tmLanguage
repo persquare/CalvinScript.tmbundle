@@ -95,15 +95,15 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#connection_inport_literal_outport_proxy</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_inport_literal</string>
-				</dict>
-				<dict>
-					<key>include</key>
 					<string>#connection_inport_identifier</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#connection_inport_identifier_outport_proxy</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#connection_inport_literal_outport_or_proxy_outport</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -294,21 +294,24 @@
 		</dict>
 		<key>connection_inport_identifier</key>
 		<dict>
-			<key>begin</key>
-			<string>^\s*(?=[\p{Alpha}_])</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.control</string>
+					<string>variable</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>variable.other.calvin</string>
+					<string>keyword.control</string>
 				</dict>
 				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>support.constant</string>
@@ -316,15 +319,33 @@
 			</dict>
 			<key>comment</key>
 			<string>Non-capturing lookahead to detect variable or constant</string>
-			<key>end</key>
-			<string>(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
-			<key>patterns</key>
-			<array>
+			<key>match</key>
+			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+		</dict>
+		<key>connection_inport_identifier_outport_proxy</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
 				<dict>
-					<key>include</key>
-					<string>#variable</string>
+					<key>name</key>
+					<string>variable</string>
 				</dict>
-			</array>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.decorator</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>Non-capturing lookahead to detect variable or constant</string>
+			<key>match</key>
+			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
 		</dict>
 		<key>connection_inport_literal</key>
 		<dict>
@@ -364,14 +385,14 @@
 				</dict>
 			</array>
 		</dict>
-		<key>connection_inport_literal_outport_proxy</key>
+		<key>connection_inport_literal_outport_or_proxy_outport</key>
 		<dict>
 			<key>begin</key>
 			<string>^\s*(?=[-0-9\.\[\{\"\!])</string>
 			<key>comment</key>
-			<string>literal on aliased outport</string>
+			<string>Non-capturing lookahead to detect JSON or raw string, followed by either outport or proxy outport</string>
 			<key>end</key>
-			<string>(&gt;)\s*\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
+			<string>(&gt;)\s*(?:([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)|(\.[\p{Alpha}_][\p{Alnum}_]*))\s*$</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key>
@@ -380,6 +401,16 @@
 					<string>keyword.control</string>
 				</dict>
 				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>entity.name.function.decorator</string>
