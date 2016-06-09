@@ -49,14 +49,18 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#link</string>
+				</dict>
+				<dict>
+					<key>comment</key>
 					<string>#connection</string>
 				</dict>
 				<dict>
-					<key>include</key>
+					<key>comment</key>
 					<string>#connection_inport_literal</string>
 				</dict>
 				<dict>
-					<key>include</key>
+					<key>comment</key>
 					<string>#connection_inport_identifier</string>
 				</dict>
 				<dict>
@@ -83,26 +87,30 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#component_link</string>
+				</dict>
+				<dict>
+					<key>comment</key>
 					<string>#connection</string>
 				</dict>
 				<dict>
-					<key>include</key>
+					<key>comment</key>
 					<string>#connection_inport_proxy</string>
 				</dict>
 				<dict>
-					<key>include</key>
+					<key>comment</key>
 					<string>#connection_outport_proxy</string>
 				</dict>
 				<dict>
-					<key>include</key>
+					<key>comment</key>
 					<string>#connection_inport_identifier</string>
 				</dict>
 				<dict>
-					<key>include</key>
+					<key>comment</key>
 					<string>#connection_inport_identifier_outport_proxy</string>
 				</dict>
 				<dict>
-					<key>include</key>
+					<key>comment</key>
 					<string>#connection_inport_literal_outport_or_proxy_outport</string>
 				</dict>
 				<dict>
@@ -201,6 +209,87 @@
 			<key>name</key>
 			<string>comment.line.number-sign.shebang</string>
 		</dict>
+		<key>comp_inport</key>
+		<dict>
+			<key>begin</key>
+			<string>&gt;</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?=$)</string>
+			<key>name</key>
+			<string>meta.inport.calvin</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comp_port</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#plainport</string>
+				</dict>
+			</array>
+		</dict>
+		<key>comp_outport</key>
+		<dict>
+			<key>begin</key>
+			<string>(?=\S))</string>
+			<key>end</key>
+			<string>(?=&gt;)</string>
+			<key>name</key>
+			<string>meta.outport.calvin</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comp_port</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#plainport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#variable</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+			</array>
+		</dict>
+		<key>comp_port</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.decorator</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>(tee)\.(token)</string>
+			<key>match</key>
+			<string>(\.[\p{Alpha}_][\p{Alnum}_]*)</string>
+			<key>name</key>
+			<string>meta.compport.calvin</string>
+		</dict>
 		<key>comp_signature_def</key>
 		<dict>
 			<key>begin</key>
@@ -256,6 +345,26 @@
 				<dict>
 					<key>include</key>
 					<string>#block_compdef</string>
+				</dict>
+			</array>
+		</dict>
+		<key>component_link</key>
+		<dict>
+			<key>begin</key>
+			<string>(?=^\s*\S)</string>
+			<key>end</key>
+			<string>(?=$)</string>
+			<key>name</key>
+			<string>meta.edge.calvin</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#comp_outport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comp_inport</string>
 				</dict>
 			</array>
 		</dict>
@@ -553,6 +662,34 @@
 			<key>name</key>
 			<string>constant.character.escape</string>
 		</dict>
+		<key>inport</key>
+		<dict>
+			<key>begin</key>
+			<string>&gt;</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?=$)</string>
+			<key>name</key>
+			<string>meta.inport.calvin</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#plainport</string>
+				</dict>
+			</array>
+		</dict>
 		<key>instance</key>
 		<dict>
 			<key>begin</key>
@@ -591,6 +728,26 @@
 			<key>name</key>
 			<string>invalid</string>
 		</dict>
+		<key>link</key>
+		<dict>
+			<key>begin</key>
+			<string>(?=^\s*\S)</string>
+			<key>end</key>
+			<string>(?=$)</string>
+			<key>name</key>
+			<string>meta.edge.calvin</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#outport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#inport</string>
+				</dict>
+			</array>
+		</dict>
 		<key>named_param</key>
 		<dict>
 			<key>begin</key>
@@ -628,6 +785,34 @@
 				</dict>
 			</array>
 		</dict>
+		<key>outport</key>
+		<dict>
+			<key>begin</key>
+			<string>(?=\S))</string>
+			<key>end</key>
+			<string>(?=&gt;)</string>
+			<key>name</key>
+			<string>meta.outport.calvin</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#plainport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#variable</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+			</array>
+		</dict>
 		<key>parameter</key>
 		<dict>
 			<key>captures</key>
@@ -640,6 +825,28 @@
 			</dict>
 			<key>match</key>
 			<string>\s*([A-Za-z_][A-Za-z0-9_]*)\s*</string>
+		</dict>
+		<key>plainport</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>(tee)\.(token)</string>
+			<key>match</key>
+			<string>([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)</string>
+			<key>name</key>
+			<string>meta.plainport.calvin</string>
 		</dict>
 		<key>port_def</key>
 		<dict>
@@ -725,6 +932,19 @@
 			</dict>
 			<key>match</key>
 			<string>\s*([A-Za-z_][A-Za-z0-9_]*)\s*</string>
+		</dict>
+		<key>voidport</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>\bvoidport\b</string>
 		</dict>
 	</dict>
 	<key>scopeName</key>
