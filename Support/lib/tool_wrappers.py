@@ -107,20 +107,16 @@ def run(script, timeout):
     if errors:
         return
     ip = _get_ip_address()
-    uri = "calvinip://{}:5000".format(ip)
+    uris = ["calvinip://{}:5000".format(ip)]
     control_uri = "http://{}:5001".format(ip)
+    attr = {'indexed_public': {'node_name': {'name': 'TextMate'}}}
     try:
-        csruntime.dispatch_and_deploy(deployable, timeout, uri, control_uri, None)
+        csruntime.dispatch_and_deploy(deployable, timeout, uris, control_uri, attr, None)
     except KeyboardInterrupt:
         # User terminated the runtime (CTRL-C)
         pass
-    except AttributeError:
-        # FIXME: Keep the old code around until next Calvin release (0.3.0)
-        rt = csruntime.runtime(uri, control_uri, None)
-        app_id = csruntime.deploy(rt, deployable, None)
-        time.sleep(100 if timeout is None else timeout)
     except:
-        pass
+        print "Could not start runtime and/or application"
 
 
 def run_debug(script, timeout):
