@@ -15,6 +15,7 @@ import calvin.Tools.csruntime as csruntime
 # from calvin.csparser.parser import calvin_parser
 from calvin.actorstore.store import DocumentationStore
 import calvin.utilities.calvinconfig as calvinconfig
+from calvin.utilities import calvinlogger
 
 
 def format_heading(heading):
@@ -137,10 +138,11 @@ def run_debug(script, timeout):
     config = calvinconfig.get()
     debug_modules = config.get('developer', 'debug_modules')
     if not debug_modules:
-        print "No 'debug_modules' option in 'developer' section of config => output verbosity is INFO everywhere."
+        print "No 'debug_modules' option in 'developer' section of config => output verbosity is DEBUG everywhere."
+        calvinlogger.get_logger().setLevel(logging.DEBUG)
     else:
         for m in debug_modules:
-            csruntime.get_logger(m).setLevel(logging.DEBUG)
+            calvinlogger.get_logger(m).setLevel(logging.DEBUG)
     print "\n{0}\n{1}\n{0}".format("-"*80, config)
     run(script, timeout)
 
