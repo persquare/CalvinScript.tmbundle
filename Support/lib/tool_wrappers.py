@@ -8,36 +8,34 @@ import socket
 import time
 import exit_codes as exit
 import webpreview as wp
-from calvin.csparser.codegen import calvin_codegen
-# import calvin.Tools.cscompiler as cc
 import calvin.Tools.csruntime as csruntime
-# import calvin.Tools.csviz as csviz
-# from calvin.csparser.parser import calvin_parser
-from calvin.actorstore.store import DocumentationStore
 import calvin.utilities.calvinconfig as calvinconfig
+from calvin.csparser.codegen import calvin_codegen
+from calvin.csparser.visualize import visualize_script
+from calvin.actorstore.store import DocumentationStore
 from calvin.utilities import calvinlogger
 
 
 def format_heading(heading):
     print '<h3>{}</h3>'.format(heading)
 
-def issue_report(issuetracker, line_offset):
-    if issuetracker.issue_count == 0:
+def issue_report(issuetracker, line_offset, report_success=True):
+    if issuetracker.issue_count == 0 and report_success:
         format_heading("No issues!")
         return
-    
+
     # Handle offset if any
     if line_offset:
         for issue in issuetracker.issues():
             if 'line' in issue:
                 issue['line'] += line_offset
-    
+
     extra = {
         'path': os.environ.get('TM_FILEPATH'),
         'filename': os.environ.get('TM_FILENAME'),
         'line': 0, 'col': 0
     }
-    fmt = issue_format()  
+    fmt = issue_format()
     if issuetracker.error_count:
         format_heading("Errors:")
         for issue in issuetracker.formatted_errors(sort_key='line', custom_format=fmt, **extra):
@@ -119,7 +117,7 @@ def run(script, timeout):
 
     if issuetracker.error_count:
         return
-        
+
     ip = _get_ip_address()
     uris = ["calvinip://{}:5000".format(ip)]
     control_uri = "http://{}:5001".format(ip)
@@ -151,11 +149,11 @@ def document(what):
     store = DocumentationStore()
     print store.help(what)
 
+
 def visualize():
     src = os.environ.get('TM_FILENAME', 'untitled.calvin')
     source_text, line_offset = get_source()
-    ir, errors, warnings = calvin_parser(source_text, src)
-    dot_src = csviz.ScriptViz(ir).render()
+    dot_src, issuetracker = visualize_script(source_text)
     args = ['dot', '-Tsvg']
     try:
         p = subprocess.Popen(args, stdin=subprocess.PIPE)
@@ -163,3 +161,6 @@ def visualize():
         p.stdin.close() # signal end of file
     except:
         print 'Visualization requires \'dot\' command from <a href="http://www.graphviz.org">GraphViz</a>'
+    issue_report(issuetracker, line_offset, report_success=False)
+
+
