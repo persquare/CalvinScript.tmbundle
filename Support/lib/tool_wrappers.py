@@ -8,10 +8,11 @@ import socket
 import time
 import exit_codes as exit
 import webpreview as wp
-import calvin.Tools.cscompiler as cc
+from calvin.csparser.codegen import calvin_codegen
+# import calvin.Tools.cscompiler as cc
 import calvin.Tools.csruntime as csruntime
-import calvin.Tools.csviz as csviz
-from calvin.csparser.parser import calvin_parser
+# import calvin.Tools.csviz as csviz
+# from calvin.csparser.parser import calvin_parser
 from calvin.actorstore.store import DocumentationStore
 import calvin.utilities.calvinconfig as calvinconfig
 
@@ -19,24 +20,39 @@ import calvin.utilities.calvinconfig as calvinconfig
 def format_heading(heading):
     print '<h3>{}</h3>'.format(heading)
 
-def issue_report(errors, warnings, line_offset):
-    if errors:
+def issue_report(issuetracker, line_offset):
+    if issuetracker.issue_count == 0:
+        format_heading("No issues!")
+        return
+    
+    # Handle offset if any
+    if line_offset:
+        for issue in issuetracker.issues():
+            if 'line' in issue:
+                issue['line'] += line_offset
+    
+    extra = {
+        'path': os.environ.get('TM_FILEPATH'),
+        'filename': os.environ.get('TM_FILENAME'),
+        'line': 0, 'col': 0
+    }
+    fmt = issue_format()  
+    if issuetracker.error_count:
         format_heading("Errors:")
-        for error in errors:
-            format_issue(error, line_offset)
-    if warnings:
+        for issue in issuetracker.formatted_errors(sort_key='line', custom_format=fmt, **extra):
+            print issue
+    if issuetracker.warning_count:
         format_heading("Warnings:")
-        for warning in warnings:
-            format_issue(warning, line_offset)
+        for issue in issuetracker.formatted_warnings(sort_key='line', custom_format=fmt, **extra):
+            print issue
 
 
-def format_issue(issue, line_offset):
-    issue['line'] += line_offset
+def issue_format():
     if 'TM_FILEPATH' in os.environ:
-        fmt = '<p>{reason} <a href="txmt://open?url=file://{path}&line={line}&column={col}">{file} {line}:{col}</a></p>'
+        fmt = '<p>{reason} <a href="txmt://open?url=file://{path}&line={line}&column={col}">{filename} {line}:{col}</a></p>'
     else:
         fmt = '<p>{reason} {line}:{col}</p>'
-    print fmt.format(path=os.environ.get('TM_FILEPATH'), file=os.environ.get('TM_FILENAME'), **issue)
+    return fmt
 
 def parse_selection(sel):
 
@@ -59,10 +75,10 @@ def parse_selection(sel):
     end = pos2linecol(end)
     return start, end
 
-def get_source(file=None):
+def get_source(filepath=None):
     source = ""
-    if file:
-        with open(file, 'r') as f:
+    if filepath:
+        with open(filepath, 'r') as f:
            source = f.read()
         return source, 0
 
@@ -78,20 +94,18 @@ def get_source(file=None):
     return source, line_offset
 
 
-def check_syntax(file=None):
-    source, line_offset = get_source(file)
-    deployable, errors, warnings = cc.compile(source)
-    if errors or warnings:
-        issue_report(errors, warnings, line_offset)
-    else:
-        format_heading("Success!")
+def check_syntax(filepath=None):
+    source_text, line_offset = get_source(filepath)
+    appname = os.environ.get('TM_FILENAME', 'untitled')
+    # Prevent . from appearing in appname (crashes deployer)
+    appname = appname.split('.')[0]
+    deployable, issuetracker = calvin_codegen(source_text, appname)
+    issue_report(issuetracker, line_offset)
+    return deployable, issuetracker
 
-    return deployable, errors, warnings
 
-
-def compile_source(file=None):
-    deployable, _, _ = check_syntax(file)
-
+def compile_source(filepath=None):
+    deployable, issuetracker = check_syntax(filepath)
     format_heading('Deployable:')
     print json.dumps(deployable, indent=4)
 
@@ -100,12 +114,11 @@ def _get_ip_address():
     return socket.gethostbyname(socket.gethostname())
 
 def run(script, timeout):
-    source, line_offset = get_source(script)
-    deployable, errors, warnings = cc.compile(source)
+    deployable, issuetracker = check_syntax(script)
 
-    issue_report(errors, warnings, line_offset)
-    if errors:
+    if issuetracker.error_count:
         return
+        
     ip = _get_ip_address()
     uris = ["calvinip://{}:5000".format(ip)]
     control_uri = "http://{}:5001".format(ip)
