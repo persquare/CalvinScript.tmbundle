@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/bin/sh
+
+# Produce a visual graph rendering of a deployed CalvinScript. Requires 'dot' command from GraphViz
+
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
+
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
+
+# Prepare output window.
+html_header "Visualize script" "${TM_VIRTUALENV}" 
+run_cmd visualize --deployment 2&gt;/dev/null
+html_footer
+</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>^G</string>
+	<key>name</key>
+	<string>Visualize Deployment</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.calvin</string>
+	<key>uuid</key>
+	<string>6692DEDA-BDE7-4439-87A4-7C19133B77C0</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

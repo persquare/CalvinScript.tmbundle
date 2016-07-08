@@ -11,7 +11,7 @@ import webpreview as wp
 import calvin.Tools.csruntime as csruntime
 import calvin.utilities.calvinconfig as calvinconfig
 from calvin.csparser.codegen import calvin_codegen
-from calvin.csparser.visualize import visualize_script
+from calvin.csparser.visualize import visualize_script, visualize_deployment
 from calvin.actorstore.store import DocumentationStore
 from calvin.utilities import calvinlogger
 
@@ -150,10 +150,14 @@ def document(what):
     print store.help(what)
 
 
-def visualize():
+def visualize(deployment):
     src = os.environ.get('TM_FILENAME', 'untitled.calvin')
     source_text, line_offset = get_source()
-    dot_src, issuetracker = visualize_script(source_text)
+    if deployment:
+        dot_src, issuetracker = visualize_deployment(source_text)
+    else:
+        dot_src, issuetracker = visualize_script(source_text)
+
     args = ['dot', '-Tsvg']
     try:
         p = subprocess.Popen(args, stdin=subprocess.PIPE)
