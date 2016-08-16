@@ -7,7 +7,7 @@
 	<key>command</key>
 	<string>#!/bin/sh
 
-# Produce a visual graph rendering of a CalvinScript. Requires 'dot' command from GraphViz
+# Produce a visual graph rendering of a CalvinScript component when cursor in definition line or component name selected. Requires 'dot' command from GraphViz
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
@@ -18,9 +18,20 @@
 ACTIVATE="${TM_VIRTUALENV}/bin/activate"
 [[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
 
+if [[ x"${TM_SELECTED_TEXT}" = x ]]; then 
+    re="component ([a-zA-Z_0-9]+)"
+    if [[ ${TM_CURRENT_LINE} =~ $re ]]; then 
+        comp=${BASH_REMATCH[1]}
+    else 
+        comp=""
+    fi
+else
+    comp=${TM_SELECTED_TEXT}
+fi
+
 # Prepare output window.
-html_header "Visualize script" "${TM_VIRTUALENV}" 
-run_cmd visualize 2&gt;/dev/null
+html_header "Visualize component: ${comp}" "${TM_VIRTUALENV}" 
+run_cmd visualize --component "${comp}" 2&gt;/dev/null
 html_footer
 </string>
 	<key>input</key>
@@ -30,7 +41,7 @@ html_footer
 	<key>keyEquivalent</key>
 	<string>^g</string>
 	<key>name</key>
-	<string>Visualize</string>
+	<string>Vizualize Component</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
@@ -38,9 +49,9 @@ html_footer
 	<key>outputLocation</key>
 	<string>newWindow</string>
 	<key>scope</key>
-	<string>source.calvin</string>
+	<string>source.calvin meta.component entity.name.type.class</string>
 	<key>uuid</key>
-	<string>ADFADA14-189C-4B90-AACF-F1E9C7F7AF37</string>
+	<string>D63603AE-DEB1-459B-A8B7-4AEC34E898A5</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>

@@ -78,6 +78,7 @@ sp.set_defaults(func=tw.document)
 # Visualize Script
 sp = subparsers.add_parser('visualize', help='Visualize CalvinScript')
 sp.add_argument('--deployment', action='store_true', help='Show what would be deployed')
+sp.add_argument('--component', type=str, help='Name of component')
 sp.set_defaults(func=tw.visualize)
 
 

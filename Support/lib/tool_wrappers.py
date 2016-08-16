@@ -11,7 +11,7 @@ import webpreview as wp
 import calvin.Tools.csruntime as csruntime
 import calvin.utilities.calvinconfig as calvinconfig
 from calvin.csparser.codegen import calvin_codegen
-from calvin.csparser.visualize import visualize_script, visualize_deployment
+from calvin.csparser.visualize import visualize_script, visualize_component, visualize_deployment
 from calvin.actorstore.store import DocumentationStore
 from calvin.utilities import calvinlogger
 
@@ -74,15 +74,15 @@ def parse_selection(sel):
     end = pos2linecol(end)
     return start, end
 
-def get_source(filepath=None):
+def get_source(filepath=None, return_selection=True):
     source = ""
     if filepath:
         with open(filepath, 'r') as f:
            source = f.read()
         return source, 0
 
-    source = os.environ.get('TM_SELECTED_TEXT', None)
-    if source:
+    selection = os.environ.get('TM_SELECTED_TEXT', None)
+    if selection and return_selection:
         # Now we need to figure out the line number of the first selected line
         (line_offset, _), (_, _) = parse_selection(os.environ.get('TM_SELECTION'))
         line_offset -= 1
@@ -150,13 +150,16 @@ def document(what):
     print store.help(what)
 
 
-def visualize(deployment):
-    src = os.environ.get('TM_FILENAME', 'untitled.calvin')
-    source_text, line_offset = get_source()
+def visualize(deployment, component):
+    source_text, line_offset = get_source(return_selection=False)
+
     if deployment:
         dot_src, issuetracker = visualize_deployment(source_text)
     else:
-        dot_src, issuetracker = visualize_script(source_text)
+        if component:
+            dot_src, issuetracker = visualize_component(source_text, component)
+        else:
+            dot_src, issuetracker = visualize_script(source_text)
 
     args = ['dot', '-Tsvg']
     try:
