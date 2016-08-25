@@ -147,7 +147,7 @@ def run_debug(script, timeout):
 
 def document(what):
     store = DocumentationStore()
-    print store.help(what or None, compact=False, formatting='md')
+    print store.help(what or None, compact=False, formatting='md', links=False)
 
 
 def visualize(deployment, component):
