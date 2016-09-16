@@ -14,7 +14,10 @@ from calvin.csparser.codegen import calvin_codegen
 from calvin.csparser.visualize import visualize_script, visualize_component, visualize_deployment
 from calvin.actorstore.store import DocumentationStore
 from calvin.utilities import calvinlogger
+from calvin.csparser.complete import Completion
+# from plistlib import writePlistToString, readPlistFromString
 
+dialog = os.environ['DIALOG']
 
 def format_heading(heading):
     print '<h3>{}</h3>'.format(heading)
@@ -151,7 +154,7 @@ def document(what):
 
 
 def visualize(deployment, component):
-    source_text, line_offset = get_source(return_selection=False)
+    source_text, line_offset = get_source(return_selection=True)
 
     if deployment:
         dot_src, issuetracker = visualize_deployment(source_text)
@@ -169,5 +172,65 @@ def visualize(deployment, component):
     except:
         print 'Visualization requires \'dot\' command from <a href="http://www.graphviz.org">GraphViz</a>'
     issue_report(issuetracker, line_offset, report_success=False)
+
+def _call_dialog(command, *args):
+    """ Call the Textmate Dialog process
+
+    command is the command to invoke.
+    args are the strings to pass as arguments
+    a dict representing the plist returned from DIALOG is returned
+
+    """
+    popen_args = [dialog, command]
+    popen_args.extend(args)
+    result = subprocess.check_output(popen_args)
+    return result
+
+def present_popup(suggestions, typed='', extra_word_chars='_', return_choice=False):
+    retval = _call_dialog('popup',
+                          '--suggestions', suggestions,
+                          '--alreadyTyped', typed,
+                          '--additionalWordCharacters', extra_word_chars,
+                          '--returnChoice' if return_choice else '',
+                          )
+    return retval if return_choice else ''
+
+def present_menu(menu_items):
+    selections = [{'title':item} for item in menu_items]
+    retval = _call_dialog('menu', '--items', writePlistToString(selections))
+    return readPlistFromString(retval) if retval else {}
+
+def present_tooltip(text, is_html=False):
+    _call_dialog('tooltip', '--html' if is_html else '--text', text)
+
+def suggestion_arg_strings(info):
+    arg_dicts = info['arg_dicts']
+    return ["()"]*len(arg_dicts)
+
+def suggestion_plist_string(info):
+    suggestions = info['suggestions']
+    args = suggestion_arg_strings(info)
+    data = zip(suggestions, args)
+    plist = ["{{ display = {}; insert = \"{}\";}}".format(s, a) for s, a in data]
+    plist_string = "( " + ", ".join(plist) + " )"
+    return plist_string
+
+def complete():
+    source, _ = get_source(return_selection=False)
+    col = int(os.environ['TM_LINE_INDEX'])
+    lineno = int(os.environ['TM_LINE_NUMBER'])
+    completion = Completion(first_line_is_zero = False)
+    completion.set_source(source)
+    d = completion.complete(lineno, col)
+    if not d['type'] or not d['suggestions']:
+        # exit.discard()
+        exit.show_tool_tip("No completions")
+    if len(d['suggestions']) == 1:
+        exit.insert_snippet("{}$0".format(d['completions'][0]))
+    n = len(d['suggestions'][0]) - len(d['completions'][0])
+    typed = d['suggestions'][0][:n]
+    present_popup(suggestion_plist_string(d), typed=typed)
+    # exit.insert_snippet("${{1|{}|}}$0".format(",".join(d['completions'])))
+
 
 
