@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>comment</key>
-	<string>Fix a-zA-Z0-9_ vs \p{Alnum} et al according to Oniguruma syntax</string>
 	<key>fileTypes</key>
 	<array>
 		<string>calvin</string>
@@ -35,6 +33,24 @@
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>argument</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#string_raw</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#variable</string>
+				</dict>
+			</array>
+		</dict>
 		<key>block</key>
 		<dict>
 			<key>patterns</key>
@@ -49,15 +65,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#connection</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_inport_literal</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_inport_identifier</string>
+					<string>#link</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -83,27 +91,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#connection</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_inport_proxy</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_outport_proxy</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_inport_identifier</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_inport_identifier_outport_proxy</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#connection_inport_literal_outport_or_proxy_outport</string>
+					<string>#link_comp</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -259,245 +247,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>connection</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control</string>
-				</dict>
-				<key>5</key>
-				<dict>
-					<key>name</key>
-					<string>keyword</string>
-				</dict>
-				<key>6</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>7</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-			</dict>
-			<key>match</key>
-			<string>^\s*(?:(voidport)|(?:([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)))\s*(&gt;)\s*(?:(voidport)|(?:([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)))\s*$</string>
-		</dict>
-		<key>connection_inport_identifier</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>variable</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>Non-capturing lookahead to detect variable or constant</string>
-			<key>match</key>
-			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
-		</dict>
-		<key>connection_inport_identifier_outport_proxy</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>variable</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.decorator</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>Non-capturing lookahead to detect variable or constant</string>
-			<key>match</key>
-			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
-		</dict>
-		<key>connection_inport_literal</key>
-		<dict>
-			<key>begin</key>
-			<string>^\s*(?=[-0-9\.\[\{\"\!])</string>
-			<key>comment</key>
-			<string>Non-capturing lookahead to detect JSON or raw string</string>
-			<key>end</key>
-			<string>(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-			</dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#string_raw</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>source.json</string>
-				</dict>
-			</array>
-		</dict>
-		<key>connection_inport_literal_outport_or_proxy_outport</key>
-		<dict>
-			<key>begin</key>
-			<string>^\s*(?=[-0-9\.\[\{\"\!])</string>
-			<key>comment</key>
-			<string>Non-capturing lookahead to detect JSON or raw string, followed by either outport or proxy outport</string>
-			<key>end</key>
-			<string>(&gt;)\s*(?:([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)|(\.[\p{Alpha}_][\p{Alnum}_]*))\s*$</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.decorator</string>
-				</dict>
-			</dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#string_raw</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>source.json</string>
-				</dict>
-			</array>
-		</dict>
-		<key>connection_inport_proxy</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.decorator</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>aliased inport</string>
-			<key>match</key>
-			<string>^\s*(\.[\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
-		</dict>
-		<key>connection_outport_proxy</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.decorator</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>aliased outport</string>
-			<key>match</key>
-			<string>^\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*(&gt;)\s*(\.[\p{Alpha}_][\p{Alnum}_]*)\s*$</string>
-		</dict>
 		<key>constdef</key>
 		<dict>
 			<key>begin</key>
@@ -526,7 +275,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>source.json</string>
+					<string>#argument</string>
 				</dict>
 			</array>
 		</dict>
@@ -552,6 +301,136 @@
 			<string>\\.</string>
 			<key>name</key>
 			<string>constant.character.escape</string>
+		</dict>
+		<key>inport</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*</string>
+		</dict>
+		<key>inport_comp_list</key>
+		<dict>
+			<key>begin</key>
+			<string>(&gt;)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?=$)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#transform</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#inport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#link_comp_port</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>\s*(,)\s*(?=[[A-Za-z]\.)</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>invalid</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>\s*(,\s*(?:[^[A-Za-z\s]|$))</string>
+				</dict>
+			</array>
+		</dict>
+		<key>inport_list</key>
+		<dict>
+			<key>begin</key>
+			<string>(&gt;)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?=$)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#transform</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#inport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>\s*(,)\s*(?=[A-Za-z])</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>invalid</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>\s*(,\s*(?:[^[A-Za-z\s]|$))</string>
+				</dict>
+			</array>
 		</dict>
 		<key>instance</key>
 		<dict>
@@ -591,6 +470,114 @@
 			<key>name</key>
 			<string>invalid</string>
 		</dict>
+		<key>link</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#link_left</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#link_right</string>
+				</dict>
+			</array>
+		</dict>
+		<key>link_comp</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#link_left</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#link_comp_port</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#link_comp_right</string>
+				</dict>
+			</array>
+		</dict>
+		<key>link_comp_port</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.decorator</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>aliased inport</string>
+			<key>match</key>
+			<string>\s*(\.[\p{Alpha}_][\p{Alnum}_]*)\s*</string>
+		</dict>
+		<key>link_comp_right</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#inport_comp_list</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#invalid</string>
+				</dict>
+			</array>
+		</dict>
+		<key>link_left</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#outport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#argument</string>
+				</dict>
+			</array>
+		</dict>
+		<key>link_right</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#inport_list</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#invalid</string>
+				</dict>
+			</array>
+		</dict>
 		<key>named_param</key>
 		<dict>
 			<key>begin</key>
@@ -616,17 +603,27 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#string_raw</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>source.json</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#variable</string>
+					<string>#argument</string>
 				</dict>
 			</array>
+		</dict>
+		<key>outport</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*</string>
 		</dict>
 		<key>parameter</key>
 		<dict>
@@ -713,6 +710,40 @@
 				</dict>
 			</array>
 		</dict>
+		<key>transform</key>
+		<dict>
+			<key>begin</key>
+			<string>(/)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.decorator</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(/)</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.decorator</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#argument</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#invalid</string>
+				</dict>
+			</array>
+		</dict>
 		<key>variable</key>
 		<dict>
 			<key>captures</key>
@@ -725,6 +756,13 @@
 			</dict>
 			<key>match</key>
 			<string>\s*([A-Za-z_][A-Za-z0-9_]*)\s*</string>
+		</dict>
+		<key>voidport</key>
+		<dict>
+			<key>match</key>
+			<string>\bvoidport\b</string>
+			<key>name</key>
+			<string>keyword</string>
 		</dict>
 	</dict>
 	<key>scopeName</key>
