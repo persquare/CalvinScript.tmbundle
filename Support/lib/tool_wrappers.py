@@ -21,11 +21,11 @@ from calvin.csparser.complete import Completion
 dialog = os.environ['DIALOG']
 
 def format_heading(heading):
-    print '<h3>{}</h3>'.format(heading)
+    return '<h3>{}</h3>'.format(heading)
 
-def issue_report(issuetracker, line_offset, report_success=True):
+def issue_report_text(issuetracker, line_offset, report_success=True):
     if issuetracker.issue_count == 0 and report_success:
-        format_heading("No issues!")
+        report.append(format_heading("No issues!"))
         return
 
     # Handle offset if any
@@ -39,16 +39,20 @@ def issue_report(issuetracker, line_offset, report_success=True):
         'filename': os.environ.get('TM_FILENAME'),
         'line': 0, 'col': 0
     }
+    report = []
     fmt = issue_format()
     if issuetracker.error_count:
-        format_heading("Errors:")
+        report.append(format_heading("Errors:"))
         for issue in issuetracker.formatted_errors(sort_key='line', custom_format=fmt, **extra):
-            print issue
+            report.append(issue)
     if issuetracker.warning_count:
-        format_heading("Warnings:")
+        report.append(format_heading("Warnings:"))
         for issue in issuetracker.formatted_warnings(sort_key='line', custom_format=fmt, **extra):
-            print issue
+            report.append(issue)
+    return '\n'.join(report)
 
+def issue_report(issuetracker, line_offset, report_success=True):
+    print issue_report_text(issuetracker, line_offset, report_success)
 
 def issue_format():
     if 'TM_FILEPATH' in os.environ:
@@ -97,29 +101,35 @@ def get_source(filepath=None, return_selection=True):
     return source, line_offset
 
 
-def check_syntax(filepath=None):
+def _parse_file(filepath):
     source_text, line_offset = get_source(filepath)
     appname = os.environ.get('TM_FILENAME', 'untitled')
     # Prevent . from appearing in appname (crashes deployer)
     appname = appname.split('.')[0]
     deployable, issuetracker = calvin_codegen(source_text, appname)
-    issue_report(issuetracker, line_offset)
-    return deployable, issuetracker
+    return deployable, issuetracker, line_offset
 
+def check_syntax(filepath=None):
+    deployable, issuetracker, line_offset = _parse_file(filepath)
+    issue_report(issuetracker, line_offset)
+    return deployable
 
 def compile_source(filepath=None):
-    deployable, issuetracker = check_syntax(filepath)
-    format_heading('Deployable:')
+    deployable = check_syntax(filepath)
+    print format_heading('Deployable:')
     print json.dumps(deployable, indent=4)
-
 
 def _get_ip_address():
     return socket.gethostbyname(socket.gethostname())
 
 def run(script, timeout):
-    deployable, issuetracker = check_syntax(script)
+    # If no errors => run, suppress warnings
+    # If errors => change to HTML output and report errors + warnings
+    deployable, issuetracker, line_offset = _parse_file(script)
 
     if issuetracker.error_count:
+        errors = issue_report_text(issuetracker, line_offset)
+        os.write(int(os.environ.get('TM_ERROR_FD', 2)), errors)
         return
 
     ip = _get_ip_address()
