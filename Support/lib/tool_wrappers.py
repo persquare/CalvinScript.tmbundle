@@ -6,6 +6,7 @@ import json
 import subprocess
 import socket
 import time
+import re
 import exit_codes as exit
 import webpreview as wp
 import calvin.Tools.csruntime as csruntime
@@ -154,15 +155,16 @@ def document(what):
 
 
 def visualize(deployment, component):
-    source_text, line_offset = get_source(return_selection=True)
-
+    source_text, line_offset = get_source(return_selection=False)
     if deployment:
         dot_src, issuetracker = visualize_deployment(source_text)
     else:
         if component:
-            dot_src, issuetracker = visualize_component(source_text, component)
-        else:
-            dot_src, issuetracker = visualize_script(source_text)
+            COMP_RE = r'\s*component\s*%s\b[^}]*}' % (component,)
+            mo = re.search(COMP_RE, source_text)
+            if mo:
+                source_text = mo.group(0)
+        dot_src, issuetracker = visualize_script(source_text)
 
     args = ['dot', '-Tsvg']
     try:
