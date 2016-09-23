@@ -231,6 +231,8 @@
 			<string>How can I run patterns inside of the beginCapture? Not possible.</string>
 			<key>end</key>
 			<string>}</string>
+			<key>name</key>
+			<string>meta.component</string>
 			<key>patterns</key>
 			<array>
 				<dict>
