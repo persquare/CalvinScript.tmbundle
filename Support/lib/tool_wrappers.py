@@ -215,15 +215,33 @@ def present_menu(menu_items):
 def present_tooltip(text, is_html=False):
     _call_dialog('tooltip', '--html' if is_html else '--text', text)
 
-def suggestion_arg_strings(info):
-    arg_dicts = info['arg_dicts']
-    return ["()"]*len(arg_dicts)
+def _fmt_arg(arg):
+    if type(arg) is str:
+        arg = '\\\"{}\\\"'.format(arg.encode('string_escape').encode('string_escape'))
+    elif type(arg) is unicode:
+        arg = '\\\"{}\\\"'.format(arg.encode('unicode_escape').arg.encode('unicode_escape'))
+    return arg
 
-def suggestion_plist_string(info):
+def _format_args(arg_dict):
+    # Mandatory args:
+    mandatory = ["{0}=${1}".format(p, i) for i, p in enumerate(arg_dict.get('mandatory', []), start=1)]
+    # Optional args:
+    opt_args = arg_dict.get('optional', {})
+    optional = ['{0}=${{{1}:{2}}}'.format(p, i, _fmt_arg(opt_args[p])) for i, p in enumerate(opt_args, start=len(mandatory)+1)]
+    # print mandatory, optional
+    all_args = mandatory + optional
+    # print all_args
+    formatted_args = "(" + ", ".join(all_args) + ")$0"
+    return formatted_args
+
+def _suggestions(info):
+    """Return a list of tuples (suggestion, formatted_args) for each entry in info."""
     suggestions = info['suggestions']
-    args = suggestion_arg_strings(info)
-    data = zip(suggestions, args)
-    plist = ["{{ display = {}; insert = \"{}\";}}".format(s, a) for s, a in data]
+    formatted_args = [_format_args(a) for a in info['arg_dicts']]
+    return zip(suggestions, formatted_args)
+
+def suggestions_plist_string(suggestions):
+    plist = ["{{ display = {}; insert = \"{}\";}}".format(s, a) for s, a in suggestions]
     plist_string = "( " + ", ".join(plist) + " )"
     return plist_string
 
@@ -237,12 +255,16 @@ def complete():
     if not d['type'] or not d['suggestions']:
         # exit.discard()
         exit.show_tool_tip("No completions")
-    if len(d['suggestions']) == 1:
-        exit.insert_snippet("{}$0".format(d['completions'][0]))
+    # How much have user already typed?
     n = len(d['suggestions'][0]) - len(d['completions'][0])
     typed = d['suggestions'][0][:n]
-    present_popup(suggestion_plist_string(d), typed=typed)
-    # exit.insert_snippet("${{1|{}|}}$0".format(",".join(d['completions'])))
+    # Get formatted suggestions as list of (suggestion, formated_args) tuples
+    suggestions = _suggestions(d)
+    if len(suggestions) == 1:
+        s, a = suggestions[0]
+        exit.insert_snippet("{}{}".format(s[n:], a))
+    splist = suggestions_plist_string(suggestions)
+    present_popup(splist, typed=typed)
 
 
 
