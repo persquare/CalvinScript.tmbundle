@@ -304,24 +304,6 @@
 			<key>name</key>
 			<string>constant.character.escape</string>
 		</dict>
-		<key>inport</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>variable.other.calvin</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>support.constant</string>
-				</dict>
-			</dict>
-			<key>match</key>
-			<string>\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*</string>
-		</dict>
 		<key>inport_comp_list</key>
 		<dict>
 			<key>begin</key>
@@ -344,7 +326,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#inport</string>
+					<string>#port</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -402,7 +384,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#inport</string>
+					<string>#port</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -554,7 +536,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#outport</string>
+					<string>#port</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -609,7 +591,20 @@
 				</dict>
 			</array>
 		</dict>
-		<key>outport</key>
+		<key>parameter</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>\s*([A-Za-z_][A-Za-z0-9_]*)\s*</string>
+		</dict>
+		<key>port</key>
 		<dict>
 			<key>captures</key>
 			<dict>
@@ -626,19 +621,6 @@
 			</dict>
 			<key>match</key>
 			<string>\s*([\p{Alpha}_][\p{Alnum}_]*)\.([\p{Alpha}_][\p{Alnum}_]*)\s*</string>
-		</dict>
-		<key>parameter</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>variable.parameter</string>
-				</dict>
-			</dict>
-			<key>match</key>
-			<string>\s*([A-Za-z_][A-Za-z0-9_]*)\s*</string>
 		</dict>
 		<key>port_def</key>
 		<dict>
