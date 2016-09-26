@@ -217,9 +217,9 @@ def present_tooltip(text, is_html=False):
 
 def _fmt_arg(arg):
     if type(arg) is str:
-        arg = '\\\"{}\\\"'.format(arg.encode('string_escape').encode('string_escape'))
-    elif type(arg) is unicode:
-        arg = '\\\"{}\\\"'.format(arg.encode('unicode_escape').arg.encode('unicode_escape'))
+        arg = '"{}"'.format(arg.encode('string_escape'))
+    # elif type(arg) is unicode:
+    #     arg = '"{}"'.format(arg.encode('unicode_escape'))
     return arg
 
 def _format_args(arg_dict):
@@ -228,10 +228,7 @@ def _format_args(arg_dict):
     # Optional args:
     opt_args = arg_dict.get('optional', {})
     optional = ['{0}=${{{1}:{2}}}'.format(p, i, _fmt_arg(opt_args[p])) for i, p in enumerate(opt_args, start=len(mandatory)+1)]
-    # print mandatory, optional
-    all_args = mandatory + optional
-    # print all_args
-    formatted_args = "(" + ", ".join(all_args) + ")$0"
+    formatted_args = "(" + ", ".join(mandatory + optional) + ")$0"
     return formatted_args
 
 def _suggestions(info):
@@ -241,7 +238,12 @@ def _suggestions(info):
     return zip(suggestions, formatted_args)
 
 def suggestions_plist_string(suggestions):
-    plist = ["{{ display = {}; insert = \"{}\";}}".format(s, a) for s, a in suggestions]
+    def fmt_arg(a):
+        if type(a) is str:
+            a = a.encode('string_escape')
+            a = a.replace('"', '\\"')
+        return a
+    plist = ['{{ display = {}; insert = "{}";}}'.format(s, fmt_arg(a)) for s, a in suggestions]
     plist_string = "( " + ", ".join(plist) + " )"
     return plist_string
 
