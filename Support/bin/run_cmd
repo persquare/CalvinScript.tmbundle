@@ -81,6 +81,10 @@ sp.add_argument('--deployment', action='store_true', help='Show what would be de
 sp.add_argument('--component', type=str, help='Name of component')
 sp.set_defaults(func=tw.visualize)
 
+# Complete input at cursor
+sp = subparsers.add_parser('complete', help='Complete input at cursor')
+sp.set_defaults(func=tw.complete)
+
 
 # Get the arguments and call the corresponding function
 args = parser.parse_args()
