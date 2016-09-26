@@ -364,7 +364,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>\s*(,)\s*(?=[[A-Za-z]\.)</string>
+					<string>\s*(,)\s*(?=[A-Za-z]\.)</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -376,7 +376,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>\s*(,\s*(?:[^[A-Za-z\s]|$))</string>
+					<string>\s*(,\s*(?:[^A-Za-z\s]|$))</string>
 				</dict>
 			</array>
 		</dict>
@@ -430,7 +430,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>\s*(,\s*(?:[^[A-Za-z\s]|$))</string>
+					<string>\s*(,\s*(?:[^A-Za-z\s]|$))</string>
 				</dict>
 			</array>
 		</dict>
