@@ -37,7 +37,7 @@ run_cmd complete #2&gt;/dev/null
 	<key>outputLocation</key>
 	<string>atCaret</string>
 	<key>scope</key>
-	<string>L:(source.calvin - meta.whitespace.leading - dyn.caret.begin.line)</string>
+	<string>L:(source.calvin - meta.whitespace.leading - dyn.caret.begin.line - variable)</string>
 	<key>uuid</key>
 	<string>02C21FE0-5FF4-447E-ADC1-CC5C78558DDF</string>
 	<key>version</key>
