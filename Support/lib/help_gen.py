@@ -30,7 +30,7 @@ def parse_keycode(keycode):
         u'^':u'⌃',
         u'@':u'⌘',
         u'\x0A':u'↩',
-        u'\x08':u'⇥',
+        u'\x09':u'⇥',
         u' ':u'␣'
     }
     printable = []
