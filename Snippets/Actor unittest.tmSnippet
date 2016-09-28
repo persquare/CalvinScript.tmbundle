@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>test_args = [${1}]
+test_kwargs = {${2}}
+
+test_set = [
+    {
+        'setup': [lambda self: ${3:self.}],
+        'in': {'${4:port}': [${5:data}]},
+        'out': {'${6:port}': [${7:data}]},
+        'postcond': [lambda self: ${8:self.}]
+    },${0}
+]
+</string>
+	<key>name</key>
+	<string>Actor unittest</string>
+	<key>scope</key>
+	<string>source.python</string>
+	<key>tabTrigger</key>
+	<string>atest</string>
+	<key>uuid</key>
+	<string>CEB5104A-2E7E-4C2E-AD3D-BA49B7059BF6</string>
+</dict>
+</plist>
