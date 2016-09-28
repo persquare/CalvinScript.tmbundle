@@ -20,6 +20,10 @@
   	<string>659ACFF1-BEDD-44EF-A576-BAE3E3D45477</string>
     <string>6A2B628E-DDDE-496D-B1D9-6476535E0CC5</string>
 		<string>------------------------------------</string>
+    <string>ADFADA14-189C-4B90-AACF-F1E9C7F7AF37</string>
+    <string>D63603AE-DEB1-459B-A8B7-4AEC34E898A5</string>
+    <string>6692DEDA-BDE7-4439-87A4-7C19133B77C0</string>
+		<string>------------------------------------</string>
   	<string>6253C0B5-D02E-4825-BA70-BD458C774289</string>
   	<string>61E36CDE-226E-4BC8-ADB8-B97DF9DCC24F</string>
   	<string>230D0D95-4558-427A-85FE-3DC0DC713F48</string>    
@@ -38,8 +42,9 @@
 			<dict>
 				<key>items</key>
 				<array>
-        <string>3D4A125A-4A55-4613-BF43-500C7984808F</string>
       	<string>6705ABAD-9728-4F62-9BB3-2C08704F9364</string>
+        <string>5CBB2C88-B3E3-4673-BB3E-DB333DDE4A62</string>
+        <string>CEB5104A-2E7E-4C2E-AD3D-BA49B7059BF6</string>
 				</array>
 				<key>name</key>
 				<string>Snippets</string>
