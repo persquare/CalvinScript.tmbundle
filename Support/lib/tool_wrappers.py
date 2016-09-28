@@ -25,8 +25,7 @@ def format_heading(heading):
 
 def issue_report_text(issuetracker, line_offset, report_success=True):
     if issuetracker.issue_count == 0 and report_success:
-        report.append(format_heading("No issues!"))
-        return
+        return format_heading("No issues!")
 
     # Handle offset if any
     if line_offset:
