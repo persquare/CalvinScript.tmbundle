@@ -325,6 +325,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
+					<key>match</key>
+					<string>//</string>
+					<key>name</key>
+					<string>invalid</string>
+				</dict>
+				<dict>
 					<key>include</key>
 					<string>#transform</string>
 				</dict>
@@ -352,18 +358,6 @@
 					<key>match</key>
 					<string>\s*(,)\s*(?=[A-Za-z]\.)</string>
 				</dict>
-				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>invalid</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>\s*(,\s*(?:[^A-Za-z\s]|$))</string>
-				</dict>
 			</array>
 		</dict>
 		<key>inport_list</key>
@@ -382,6 +376,12 @@
 			<string>(?=$)</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>match</key>
+					<string>//</string>
+					<key>name</key>
+					<string>invalid</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>#transform</string>
@@ -405,18 +405,6 @@
 					</dict>
 					<key>match</key>
 					<string>\s*(,)\s*(?=[A-Za-z])</string>
-				</dict>
-				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>invalid</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>\s*(,\s*(?:[^A-Za-z\s]|$))</string>
 				</dict>
 			</array>
 		</dict>
@@ -783,6 +771,8 @@
 					<string>punctuation.definition.decorator</string>
 				</dict>
 			</dict>
+			<key>name</key>
+			<string>meta.port.transform</string>
 			<key>patterns</key>
 			<array>
 				<dict>
