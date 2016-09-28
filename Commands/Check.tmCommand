@@ -7,7 +7,7 @@
 	<key>command</key>
 	<string>#!/bin/sh
 
-# Check CalvinScript synatx for correctness and present the result
+# Check CalvinScript syntax for correctness and present the result
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
