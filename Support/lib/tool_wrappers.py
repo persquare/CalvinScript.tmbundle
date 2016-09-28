@@ -234,7 +234,10 @@ def _format_args(arg_dict):
 def _suggestions(info):
     """Return a list of tuples (suggestion, formatted_args) for each entry in info."""
     suggestions = info['suggestions']
-    formatted_args = [_format_args(a) for a in info['arg_dicts']]
+    if info['type'] == 'actor':
+        formatted_args = [_format_args(a) for a in info['arg_dicts']]
+    else:
+        formatted_args = [info['postamble']]*len(suggestions)
     return zip(suggestions, formatted_args)
 
 def suggestions_plist_string(suggestions):
