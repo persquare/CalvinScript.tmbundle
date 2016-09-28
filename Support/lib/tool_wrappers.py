@@ -18,7 +18,7 @@ from calvin.utilities import calvinlogger
 from calvin.csparser.complete import Completion
 # from plistlib import writePlistToString, readPlistFromString
 
-dialog = os.environ['DIALOG']
+dialog = os.environ.get('DIALOG')
 
 def format_heading(heading):
     return '<h3>{}</h3>'.format(heading)
