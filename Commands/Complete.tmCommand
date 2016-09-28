@@ -5,9 +5,11 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>#!/bin/sh
+	<string>#!/bin/bash
 
 # Complete input at cursor
+# Default mapped to ⇥ (tab) key unless in leading whitespace including start of line
+
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
@@ -25,7 +27,7 @@ run_cmd complete #2&gt;/dev/null
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>keyEquivalent</key>
-	<string></string>
+	<string>	</string>
 	<key>name</key>
 	<string>Complete</string>
 	<key>outputCaret</key>
@@ -35,7 +37,7 @@ run_cmd complete #2&gt;/dev/null
 	<key>outputLocation</key>
 	<string>atCaret</string>
 	<key>scope</key>
-	<string>source.calvin</string>
+	<string>L:(source.calvin - meta.whitespace.leading - dyn.caret.begin.line)</string>
 	<key>uuid</key>
 	<string>02C21FE0-5FF4-447E-ADC1-CC5C78558DDF</string>
 	<key>version</key>
