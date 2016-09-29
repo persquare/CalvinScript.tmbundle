@@ -88,19 +88,15 @@ def extract_docstring(string):
 def extract_python_docstring(string):
     DOCSTRING = r'\s*#!.+?python.*?"""(.*?)"""'
     match = re.match(DOCSTRING, string, re.DOTALL)
-    if match:
-        return match.group(1)
-    return u''
+    return match.group(1) if match else u''
 
 def extract_comment_docstring(string):
     DOCSTRING = r'#!.+\n\n((?:\s*#.*\n)+)'
     match = re.match(DOCSTRING, string, re.MULTILINE)
-    if match:
-        lines = [line.lstrip('# \t') for line in match.group(1).split('\n')]
-        docs = '\n'.join(lines)
-        return docs
-    return u''
-
+    if not match:
+        return u''
+    lines = [line.lstrip('# \t') for line in match.group(1).split('\n')]
+    return '\n'.join(lines)
 
 def generate_keyboard_shortcut_docs(cmd_dir):
     # Auto-generate keyboard shortcut list
