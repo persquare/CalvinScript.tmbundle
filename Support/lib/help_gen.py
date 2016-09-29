@@ -11,11 +11,9 @@ FIXME: List tab-triggers
 import os
 import sys
 import re
+import json
+from subprocess import Popen, PIPE
 
-try:
-    import biplist as plistlib
-except:
-    import plistlib
 
 def parse_keycode(keycode):
     # a => A
@@ -31,6 +29,7 @@ def parse_keycode(keycode):
         u'@':u'⌘',
         u'\x0A':u'↩',
         u'\x09':u'⇥',
+        u'\x1B':u'⎋',
         u' ':u'␣'
     }
     printable = []
@@ -54,25 +53,24 @@ def parse_keycode(keycode):
     return printable
 
 def commandlist(cmd_dir):
+
+    def json_from_plist(path):
+        p = Popen(['plutil', '-convert', 'json', path, '-o', '-'], stdout=PIPE, stderr=PIPE)
+        res, err = p.communicate()
+        return json.loads(res) if not err else {}
+
     commands = [];
-    errors = []
-    for file in os.listdir(cmd_dir):
-        path = unicode(os.path.join(cmd_dir, file), 'utf-8')
-        pl = plistlib.readPlist(path)
-        try:
-            if pl.get(u'isDisabled', False):
-                continue
-            raw_combo = pl.get(u'keyEquivalent', u'').decode('utf-8')
-            name = pl.get(u'name', u'NONAME')
-            docstring = extract_docstring(pl.get(u'command', u''))
-            commands.append((raw_combo, name, docstring))
-        except:
-            print "Unexpected error:", sys.exc_info()[0]
-            #print raw_combo, name
-            print type(path), path
-            errors.append(path)
-            raise
-    return commands, errors
+    for f in os.listdir(cmd_dir):
+        path = os.path.join(cmd_dir, f)
+        pl = json_from_plist(path)
+        if not pl or pl.get('isDisabled', False):
+            continue
+        raw_combo = pl.get('keyEquivalent', '')
+        name = pl.get('name', 'NONAME')
+        docstring = extract_docstring(pl.get('command', ''))
+        commands.append((raw_combo, name, docstring))
+
+    return commands
 
 def extract_docstring(string):
     LANG = r'^#!.+[/|\s+]([a-z]+)'
@@ -108,7 +106,7 @@ def generate_keyboard_shortcut_docs(cmd_dir):
     # Auto-generate keyboard shortcut list
     print u'<table><tr><th>Keys</th><th>Command</th><th>Comment</th></tr>\n'.encode('utf-8')
 
-    cmds, errors = commandlist(cmd_dir)
+    cmds = commandlist(cmd_dir)
     for (raw_combo, cmd_name, docstring) in cmds:
         if not raw_combo:
             continue
@@ -130,13 +128,9 @@ def generate_keyboard_shortcut_docs(cmd_dir):
 if __name__ == '__main__':
     CMD_DIR = '/Users/eperspe/Source/FOSS/TextTasks.tmbundle/Commands'
 
-    cmds, error_files = commandlist(CMD_DIR)
+    cmds = commandlist(CMD_DIR)
     print u'Command files:'
     for t in cmds:
         print type(t[0]), t[0], ' : ', type(t[1]), t[1]
-    print u'Error in files:'
-    print error_files
-    for f in error_files:
-        print f
-    #
+
     generate_keyboard_shortcut_docs(CMD_DIR)
