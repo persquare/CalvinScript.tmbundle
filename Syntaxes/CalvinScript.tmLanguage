@@ -67,6 +67,10 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#deployscript</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#instance</string>
 				</dict>
 				<dict>
@@ -291,6 +295,40 @@
 				</dict>
 			</array>
 		</dict>
+		<key>deployscript</key>
+		<dict>
+			<key>begin</key>
+			<string>\s*((?:rule)|(?:group)|(?:apply(?:\s*\*)?))\s*</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>rule\s+(?=[a-zA-Z_0-9,\s]+:)</string>
+			<key>end</key>
+			<string>$</string>
+			<key>name</key>
+			<string>meta.deployscript</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>[:,\s]*</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#predicate</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#id_list</string>
+				</dict>
+			</array>
+		</dict>
 		<key>docstring</key>
 		<dict>
 			<key>begin</key>
@@ -313,6 +351,24 @@
 			<string>\\.</string>
 			<key>name</key>
 			<string>constant.character.escape</string>
+		</dict>
+		<key>id_list</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>variable.other.calvin</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>([a-zA-Z_0-9]+)(?:\s*,\s*([a-zA-Z_0-9]+))*</string>
 		</dict>
 		<key>inport_comp_list</key>
 		<dict>
@@ -668,6 +724,43 @@
 			</dict>
 			<key>match</key>
 			<string>\s*([A-Za-z_][A-Za-z0-9_]*)\s*</string>
+		</dict>
+		<key>predicate</key>
+		<dict>
+			<key>begin</key>
+			<string>\s*([a-zA-Z_0-9]+))(\()</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>meta.function-call</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(\))</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>meta.predicate</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#named_param</string>
+				</dict>
+			</array>
 		</dict>
 		<key>property</key>
 		<dict>
