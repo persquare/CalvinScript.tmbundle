@@ -508,6 +508,27 @@
 			<key>name</key>
 			<string>invalid</string>
 		</dict>
+		<key>label</key>
+		<dict>
+			<key>match</key>
+			<string>\s*:[\p{Alpha}_][\p{Alnum}_]*\s+</string>
+			<key>name</key>
+			<string>entity.name.function.decorator</string>
+		</dict>
+		<key>labeled_argument</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#label</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#argument</string>
+				</dict>
+			</array>
+		</dict>
 		<key>link</key>
 		<dict>
 			<key>patterns</key>
@@ -595,6 +616,10 @@
 				<dict>
 					<key>include</key>
 					<string>#voidport</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#labeled_argument</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -874,6 +899,10 @@
 			<string>meta.port.transform</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#labeled_argument</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>#argument</string>
