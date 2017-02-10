@@ -49,7 +49,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>source.json</string>
+					<string>source.calvinjson</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -510,10 +510,21 @@
 		</dict>
 		<key>label</key>
 		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>meta.definition.decorator.calvin</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>meta.definition.label.calvin</string>
+				</dict>
+			</dict>
 			<key>match</key>
-			<string>\s*:[\p{Alpha}_][\p{Alnum}_]*\s+</string>
-			<key>name</key>
-			<string>entity.name.function.decorator</string>
+			<string>\s*(:)([\p{Alpha}_][\p{Alnum}_])*\s+</string>
 		</dict>
 		<key>labeled_argument</key>
 		<dict>
