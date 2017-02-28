@@ -6,8 +6,7 @@ Clone the repository and move the CalvinScript bundle to `~/Library/Application\
 TextMate/Bundles/`, or
 create a symlink from TextMate's bundle directory to the cloned repository:
 
-    cd ~/Library/Application\ Support/
-TextMate/Bundles/
+    cd ~/Library/Application\ Support/TextMate/Bundles/
     ln -s path/to/CalvinScript.tmbundle .
 
 ## Getting started
