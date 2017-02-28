@@ -2,8 +2,7 @@
 A [CalvinScript][1] bundle for TextMate2
 
 ## Installation
-Clone the repository and move the CalvinScript bundle to `~/Library/Application\ Support/
-TextMate/Bundles/`, or
+Clone the repository and move the CalvinScript bundle to `~/Library/Application\ Support/TextMate/Bundles/`, or
 create a symlink from TextMate's bundle directory to the cloned repository:
 
     cd ~/Library/Application\ Support/TextMate/Bundles/
