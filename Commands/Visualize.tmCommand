@@ -20,7 +20,7 @@ ACTIVATE="${TM_VIRTUALENV}/bin/activate"
 
 # Prepare output window.
 html_header "Visualize script" "${TM_VIRTUALENV}" 
-run_cmd visualize 2&gt;/dev/null
+csviz --script ${TM_FILEPATH} | dot -Tsvg 2&gt;/dev/null
 html_footer
 </string>
 	<key>input</key>
