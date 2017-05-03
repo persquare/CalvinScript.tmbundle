@@ -7,7 +7,7 @@
 	<key>command</key>
 	<string>#!/bin/bash
 
-# Compile a CalvinScript and present the result
+# Compile a CalvinScript and show the deployinfo
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 

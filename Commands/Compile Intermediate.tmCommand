@@ -7,7 +7,7 @@
 	<key>command</key>
 	<string>#!/bin/bash
 
-# Compile a CalvinScript and present the result
+# Compile a CalvinScript and show the intermediate representation
 
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
@@ -29,10 +29,14 @@ html_footer
 </string>
 	<key>input</key>
 	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
 	<key>keyEquivalent</key>
 	<string>@I</string>
 	<key>name</key>
 	<string>Compile Intermediate</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
 	<key>outputFormat</key>
 	<string>html</string>
 	<key>outputLocation</key>
@@ -41,5 +45,7 @@ html_footer
 	<string>source.calvin</string>
 	<key>uuid</key>
 	<string>A3500D5F-2F88-4581-B571-66B3E39E5125</string>
+	<key>version</key>
+	<integer>2</integer>
 </dict>
 </plist>
