@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/bin/bash
+
+# Compile a CalvinScript and present the result
+
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
+
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
+
+FMT="&lt;p&gt;{type!c}: {reason} &lt;a href=\"txmt://open?url=file://${TM_FILEPATH}&amp;line={line}&amp;column={col}\"&gt;${TM_FILENAME} {line}:{col}&lt;/a&gt;&lt;/p&gt;"
+
+# Prepare output window.
+html_header "Compile deployscript" "${TM_VIRTUALENV}"
+echo "&lt;pre&gt;"
+cscompile --deployscript --output "/dev/stdout" --issue-fmt "$FMT" "${TM_FILEPATH}" 
+echo "&lt;/pre&gt;"
+html_footer
+</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@D</string>
+	<key>name</key>
+	<string>Compile Deployscript</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.calvin</string>
+	<key>uuid</key>
+	<string>D19F50B4-64CF-421B-A637-69CE7EA0EC29</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
