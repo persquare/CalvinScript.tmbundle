@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>command</key>
+	<string>#!/bin/bash
+
+# Run codegen test on the current file
+
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
+
+# Activate the virtualenv if requested by environment or .tm_properties
+ACTIVATE="${TM_VIRTUALENV}/bin/activate"
+[[ -f "${ACTIVATE}" ]] &amp;&amp; . "${ACTIVATE}"
+
+# FMT="&lt;p&gt;{type!c}: {reason} &lt;a href=\"txmt://open?url=file://${TM_FILEPATH}&amp;line={line}&amp;column={col}\"&gt;${TM_FILENAME} {line}:{col}&lt;/a&gt;&lt;/p&gt;"
+
+filename=$(basename "${TM_FILEPATH}") 
+filename="${filename%.*}"
+
+# Prepare output window.
+html_header "Compile deployscript" "${TM_VIRTUALENV}"
+echo "&lt;pre&gt;"
+(cd ..; CALVIN_TESTING_PROXY_STORAGE=1 py.test -vv -k "${filename}" )
+echo "&lt;/pre&gt;"
+html_footer
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>^~@c</string>
+	<key>name</key>
+	<string>Run Codegen Test</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.calvin</string>
+	<key>uuid</key>
+	<string>3F1C352F-9695-4CE8-BD30-EB6E7A33C1BA</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
