@@ -1,13 +1,6 @@
 # CalvinScript.tmbundle
 A [CalvinScript][1] bundle for TextMate2
 
-## Installation
-Clone the repository and move the CalvinScript bundle to `~/Library/Application\ Support/TextMate/Bundles/`, or
-create a symlink from TextMate's bundle directory to the cloned repository:
-
-    cd ~/Library/Application\ Support/TextMate/Bundles/
-    ln -s path/to/CalvinScript.tmbundle .
-
 ## Introduction
 
 The CalvinScript bundle provides a few tools for working with CalvinScript in TextMate 2, most notably:
@@ -18,8 +11,14 @@ The CalvinScript bundle provides a few tools for working with CalvinScript in Te
 - Running CalvinScripts inside TextMate, or in a terminal
 - Rendering a graph representation of a script
 
-See Quickstart section for a full list of commands.     
+Select `Help` from the CalvinScript submenu in TextMate's Bundles menu for an a full list of commands and documentation.
 
+## Installation
+Clone the repository and move the CalvinScript bundle to `~/Library/Application\ Support/TextMate/Bundles/`, or
+create a symlink from TextMate's bundle directory to the cloned repository:
+
+    cd ~/Library/Application\ Support/TextMate/Bundles/
+    ln -s path/to/CalvinScript.tmbundle .
 
 ## Configuration
 
@@ -34,9 +33,5 @@ Change the path to wherever you keep your virtual environments.
 If you have checked out and plan to make changes, use `pip install -e .` in the Calvin's top directory. This is regardless of wether you use a virtualenv or not, but in the latter case you might need to set `TM_CALVINDIR` to point to Calvin's top directory unless you have added Calvin to `PYTHONPATH`.   
 
 At this time, using this bundle with virtualenv is experimental, YMMV.
-
-## Digging deeper
-
-Select `Help` from the CalvinScript submenu in TextMate's Bundles menu for an overview.
 
 [1]: https://github.com/EricssonResearch/calvin-base
