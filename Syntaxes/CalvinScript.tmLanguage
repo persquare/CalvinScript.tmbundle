@@ -22,6 +22,10 @@
 		</dict>
 		<dict>
 			<key>include</key>
+			<string>#include_stmt</string>
+		</dict>
+		<dict>
+			<key>include</key>
 			<string>#comment</string>
 		</dict>
 		<dict>
@@ -369,6 +373,37 @@
 			</dict>
 			<key>match</key>
 			<string>([a-zA-Z_0-9]+)(?:\s*,\s*([a-zA-Z_0-9]+))*</string>
+		</dict>
+		<key>include_stmt</key>
+		<dict>
+			<key>begin</key>
+			<string>^\s*(include)\s+([^\s/\\:\*\?]+)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>storage</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>$</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#comment_line</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#invalid</string>
+				</dict>
+			</array>
 		</dict>
 		<key>inport_comp_list</key>
 		<dict>
