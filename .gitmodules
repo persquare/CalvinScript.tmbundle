@@ -1,0 +1,3 @@
+[submodule "Support/tmBundleAutoHelp"]
+	path = Support/tmBundleAutoHelp
+	url = https://github.com/persquare/tmBundleAutoHelp.git
