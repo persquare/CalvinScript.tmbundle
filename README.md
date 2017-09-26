@@ -14,8 +14,13 @@ The CalvinScript bundle provides a few tools for working with CalvinScript in Te
 Select `Help` from the CalvinScript submenu in TextMate's Bundles menu for an a full list of commands and documentation.
 
 ## Installation
-Clone the repository and move the CalvinScript bundle to `~/Library/Application\ Support/TextMate/Bundles/`, or
-create a symlink from TextMate's bundle directory to the cloned repository:
+
+Clone the repository with the `--recursive` flag since it uses a subproject:
+
+    git clone --recursive https://github.com/persquare/CalvinScript.tmbundle.git
+  
+either directly into `~/Library/Application\ Support/TextMate/Bundles/`, or
+clone it anywhere you like and create a symlink from TextMate's bundle directory to the cloned repository:
 
     cd ~/Library/Application\ Support/TextMate/Bundles/
     ln -s path/to/CalvinScript.tmbundle .
